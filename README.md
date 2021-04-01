@@ -4,15 +4,19 @@
 `ysoserial-for-woodpecker`是基于 [ysoserial](https://github.com/frohoff/ysoserial) ,为woodpecker框架定制开发的gadget集成库。
 
 ## 0x02 功能
-
 - [ ] sleep
 - [ ] dnslog
 - [ ] httplog
 - [ ] uploadfile
-- [ ] cmd
+- [ ] uploadfile_append
+- [ ] general_cmd
+- [ ] auto_cmd
+- [ ] win_cmd
+- [ ] linux_cmd
 - [ ] classfile
 - [ ] classbase64
 - [ ] bcelfile
 - [ ] bcel
 - [ ] jsfile
 - [ ] jsbase64
+- [ ] loadjar
