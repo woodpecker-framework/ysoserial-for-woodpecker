@@ -59,21 +59,25 @@ public class CommonUtil {
         }
     }
 
-    public static String fileContextToByteArray(String filePath) throws IOException {
+    public static String fileContextToByteArrayString(String filePath) throws IOException {
         byte[] fileContent = CommonUtil.readFileByte(filePath);
+        return byteToByteArrayString(fileContent);
+    }
+
+    public static String stringToByteArrayString(String str){
+        byte[] byteString = str.getBytes();
+        return byteToByteArrayString(byteString);
+    }
+
+    public static String byteToByteArrayString(byte[] strByte){
         StringBuffer sb = new StringBuffer();
-        if(fileContent.length >0) {
-            for (byte bContent : fileContent) {
-                sb.append(bContent);
+        if(strByte.length > 0) {
+            for (byte bStr : strByte) {
+                sb.append(bStr);
                 sb.append(",");
             }
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(fileContextToByteArray("/tmp/jndi.ser"));
     }
 }

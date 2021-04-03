@@ -7,17 +7,16 @@
 - [ ] sleep
 - [ ] dnslog
 - [ ] httplog
-- [ ] uploadfile
-- [ ] uploadfile_append
-- [ ] general_cmd 常规执行命令
+- [ ] upload_file
+- [ ] raw_cmd 原生的命令执行
+- [ ] win_cmd 在windows下执行命令
+- [ ] linux_cmd 在linux下执行命令
 - [ ] auto_cmd  自动判断操作系统执行命令
-- [ ] win_cmd windows下执行命令
-- [ ] linux_cmd linux下执行命令
-- [ ] classfile
-- [ ] classbase64
-- [ ] bcelfile
+- [ ] class_file
+- [ ] class_base64
 - [ ] bcel
-- [ ] jsfile
-- [ ] jsbase64
+- [ ] bcel_file
+- [ ] script_file
+- [ ] script_base64
 - [ ] loadjar
 - [ ] jndi
