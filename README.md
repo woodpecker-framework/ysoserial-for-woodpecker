@@ -9,10 +9,10 @@
 - [ ] httplog
 - [ ] uploadfile
 - [ ] uploadfile_append
-- [ ] general_cmd
-- [ ] auto_cmd
-- [ ] win_cmd
-- [ ] linux_cmd
+- [ ] general_cmd 常规执行命令
+- [ ] auto_cmd  自动判断操作系统执行命令
+- [ ] win_cmd windows下执行命令
+- [ ] linux_cmd linux下执行命令
 - [ ] classfile
 - [ ] classbase64
 - [ ] bcelfile
@@ -20,3 +20,4 @@
 - [ ] jsfile
 - [ ] jsbase64
 - [ ] loadjar
+- [ ] jndi
