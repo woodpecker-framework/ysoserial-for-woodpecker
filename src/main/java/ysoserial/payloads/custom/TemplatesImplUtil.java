@@ -1,13 +1,7 @@
 package ysoserial.payloads.custom;
 
-import org.apache.commons.collections.Transformer;
-import org.apache.commons.collections.functors.ConstantTransformer;
-import org.apache.commons.collections.functors.InvokerTransformer;
 import sun.misc.BASE64Decoder;
 import ysoserial.payloads.util.CommonUtil;
-
-import java.io.FileOutputStream;
-
 import static ysoserial.payloads.custom.CustomCommand.*;
 
 public class TemplatesImplUtil {
