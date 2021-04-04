@@ -12,7 +12,9 @@ public class CustomCommand {
     public final static String COMMAND_BCEL_CLASS_FILE = "bcel_class_file:";
     public final static String COMMAND_SCRIPT_FILE = "script_file:";
     public final static String COMMAND_SCRIPT_BASE64 = "script_base64:";
-    public final static String COMMAND_UPLOADFILE = "uploadfile:";
+    public final static String COMMAND_UPLOADFILE = "upload_file:";
+    public final static String COMMAND_UPLOAD_BASE64 = "upload_file_base64:";
     public final static String COMMAND_LOADJAR  = "loadjar:";
+    public final static String COMMAND_LOADJAR_WITH_ARGS = "loadjar_with_args:";
     public final static String COMMAND_JNDI = "jndi:";
 }

