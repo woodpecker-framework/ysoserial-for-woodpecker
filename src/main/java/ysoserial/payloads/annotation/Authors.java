@@ -26,6 +26,9 @@ public @interface Authors {
     String JANG = "Jang";
     String ARTSPLOIT = "artsploit";
     String WH1T3P1G = "wh1t3p1g";
+    String NAVALORENZO = "navalorenzo";
+    String BEIYING ="Beiying";
+    String KORLR = "koalr";
 
     String[] value() default {};
 
