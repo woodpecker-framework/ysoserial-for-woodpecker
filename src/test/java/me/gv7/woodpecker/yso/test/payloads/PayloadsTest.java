@@ -30,7 +30,6 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import ysoserial.*;
 import me.gv7.woodpecker.yso.payloads.DynamicDependencies;
 import me.gv7.woodpecker.yso.payloads.ObjectPayload;
 import me.gv7.woodpecker.yso.test.CustomTest;
