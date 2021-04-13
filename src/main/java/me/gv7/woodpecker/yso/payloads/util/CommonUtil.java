@@ -1,6 +1,9 @@
 package me.gv7.woodpecker.yso.payloads.util;
 
-import com.sun.org.apache.bcel.internal.classfile.Utility;
+
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
 
 import java.io.*;
 
@@ -18,15 +21,31 @@ public class CommonUtil {
         }
     }
 
-    public static String classToBCEL(byte[] clazzBytes) throws IOException {
-        String strBCEL = "$$BCEL$$" + Utility.encode(clazzBytes, true);
-        return strBCEL;
+    public static Class getClass(String className){
+        Class clazz = null;
+        try{
+            Thread.currentThread().getContextClassLoader().loadClass("");
+        }catch (Exception e){
+            ClassPool pool = new ClassPool(true);
+            CtClass targetClass = pool.makeClass(className);
+            try {
+                clazz = targetClass.toClass();
+            } catch (CannotCompileException cannotCompileException) {
+                cannotCompileException.printStackTrace();
+            }
+        }
+        return clazz;
     }
 
-    public static String classToBCEL(String classPath) throws IOException {
-        byte[] clazzBytes = CommonUtil.getFileBytes(classPath);
-        return classToBCEL(clazzBytes);
-    }
+//    public static String classToBCEL(byte[] clazzBytes) throws IOException {
+//        String strBCEL = "$$BCEL$$" + Utility.encode(clazzBytes, true);
+//        return strBCEL;
+//    }
+//
+//    public static String classToBCEL(String classPath) throws IOException {
+//        byte[] clazzBytes = CommonUtil.getFileBytes(classPath);
+//        return classToBCEL(clazzBytes);
+//    }
 
     public static byte[] readFileByte(String filename) throws IOException {
 

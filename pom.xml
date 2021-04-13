@@ -177,9 +177,14 @@
 			<artifactId>remoting-jmx</artifactId>
 			<version>2.0.1.Final</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/me.gv7.woodpecker/woodpecker-bcel -->
+        <dependency>
+            <groupId>me.gv7.woodpecker</groupId>
+            <artifactId>woodpecker-bcel</artifactId>
+            <version>0.1.0</version>
+        </dependency>
 
-		<!-- gadget dependecies -->
-
+        <!-- gadget dependecies -->
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>

