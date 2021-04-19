@@ -44,12 +44,13 @@ public class PayloadRunner {
 	}
 
     private static String getDefaultTestCmd() {
-	    return getFirstExistingFile(
+	    String cmdfile =  getFirstExistingFile(
 	        "C:\\Windows\\System32\\calc.exe",
             "/System/Applications/Calculator.app/Contents/MacOS/Calculator",
             "/usr/bin/gnome-calculator",
             "/usr/bin/kcalc"
         );
+	    return String.format("raw_cmd:%s",cmdfile);
     }
 
     private static String getFirstExistingFile(String ... files) {

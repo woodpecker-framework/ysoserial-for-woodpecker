@@ -15,3 +15,5 @@ target/
 
 # tests
 pwntest
+
+.DS_Store
