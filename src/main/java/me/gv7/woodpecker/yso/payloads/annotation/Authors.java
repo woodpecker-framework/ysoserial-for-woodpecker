@@ -29,6 +29,7 @@ public @interface Authors {
     String NAVALORENZO = "navalorenzo";
     String BEIYING ="Beiying";
     String KORLR = "koalr";
+    String PHITHON = "phith0n";
 
     String[] value() default {};
 

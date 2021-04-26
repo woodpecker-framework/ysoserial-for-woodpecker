@@ -137,7 +137,7 @@ public class Gadgets {
         });
 
         // required to make TemplatesImpl happy
-        Reflections.setFieldValue(templates, "_name", "Pwnr");
+        Reflections.setFieldValue(templates, "_name", "P");
         Reflections.setFieldValue(templates, "_tfactory", transFactory.newInstance());
         return templates;
     }

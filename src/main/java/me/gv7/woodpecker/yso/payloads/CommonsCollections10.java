@@ -37,7 +37,7 @@ java.security.manager off OR set jdk.xml.enableTemplatesImplDeserialization=true
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @Dependencies({"commons-collections:commons-collections:3.2.1"})
-@Authors({ Authors.WH1T3P1G + " Compile integration:"})
+@Authors({ Authors.WH1T3P1G})
 public class CommonsCollections10 extends PayloadRunner implements ObjectPayload<HashSet> {
 
     public HashSet getObject(final String command) throws Exception {
