@@ -30,7 +30,7 @@ import org.apache.commons.collections4.functors.InvokerTransformer;
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Dependencies({"org.apache.commons:commons-collections4:4.0"})
-@Authors({ Authors.NAVALORENZO + " Compile integration:"})
+@Authors({ Authors.NAVALORENZO})
 public class CommonsCollections8 extends PayloadRunner implements ObjectPayload<TreeBag> {
 
     public TreeBag getObject(final String command) throws Exception {
