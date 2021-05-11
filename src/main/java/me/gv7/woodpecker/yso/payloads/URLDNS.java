@@ -63,6 +63,7 @@ public class URLDNS implements ObjectPayload<Object> {
 
         public static void main(final String[] args) throws Exception {
                 PayloadRunner.run(URLDNS.class, args);
+
         }
 
         /**
