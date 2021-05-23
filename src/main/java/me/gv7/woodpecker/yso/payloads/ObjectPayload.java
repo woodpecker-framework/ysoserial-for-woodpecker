@@ -44,10 +44,19 @@ public interface ObjectPayload <T> {
             catch ( Exception e1 ) {}
             if ( clazz == null ) {
                 try {
-                    return clazz = (Class<? extends ObjectPayload>) Class
-                            .forName(GeneratePayload.class.getPackage().getName() + ".payloads." + className);
+                    String targetClassName = null;
+                    Package pk = ObjectPayload.class.getPackage();
+                    if(pk != null){
+                        targetClassName = pk.getName() + "." + className;
+                    }else{
+                        // 如果ysoserial使用的是自定classloader加载的，ObjectPayload.class.getPackage()会为null。
+                        String payloadClassName = ObjectPayload.class.getName();
+                        targetClassName = payloadClassName.substring(0,payloadClassName.lastIndexOf(".")) + "." + className;
+                    }
+                    return clazz = (Class<? extends ObjectPayload>) Class.forName(targetClassName);
+                } catch ( Exception e2 ) {
+                    e2.printStackTrace();
                 }
-                catch ( Exception e2 ) {}
             }
             if ( clazz != null && !ObjectPayload.class.isAssignableFrom(clazz) ) {
                 clazz = null;

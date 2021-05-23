@@ -200,6 +200,7 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.9.2</version>
+<!--            <version>1.9.3</version>-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -264,6 +265,12 @@
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.2</version>
 		</dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>c3p0</groupId>-->
+<!--            <artifactId>c3p0</artifactId>-->
+<!--            <version>0.9.1.1</version>-->
+<!--        </dependency>-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -348,6 +355,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.5</version>
+<!--            <version>1.7.0</version>-->
         </dependency>
         <dependency>
             <groupId>org.apache.click</groupId>
