@@ -24,7 +24,7 @@ public class CommonUtil {
     public static Class getClass(String className){
         Class clazz = null;
         try{
-            Thread.currentThread().getContextClassLoader().loadClass("");
+            clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
         }catch (Exception e){
             ClassPool pool = new ClassPool(true);
             CtClass targetClass = pool.makeClass(className);

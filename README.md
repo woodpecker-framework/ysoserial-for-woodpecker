@@ -19,6 +19,8 @@
 - [ ] code_base64 注入要执行代码的base64编码
 - [ ] bcel 注入bcel字符串，实现代码执行
 - [ ] bcel_class_file 通过文件注入
+- [ ] bcel_with_args 注入bcel字符串和参数，实现代码执行
+- [ ] bcel_class_file_with_args 通过文件注入和参数，实现代码执行
 - [ ] script_file 通过js引擎执行代码
 - [ ] script_base64  通过js引擎执行代码
 - [ ] loadjar 调用jar中类的无参构造器

