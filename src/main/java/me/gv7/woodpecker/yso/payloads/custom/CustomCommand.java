@@ -10,6 +10,8 @@ public class CustomCommand {
     public final static String COMMAND_AUTO_CMD = "auto_cmd:";
     public final static String COMMAND_CLASS_FILE = "class_file:";
     public final static String COMMAND_CLASS_BASE64 = "class_base64:";
+    public final static String COMMAND_CODE_FILE = "code_file:";
+    public final static String COMMAND_CODE_BASE64 = "code_base64:";
     public final static String COMMAND_BCEL = "bcel:";
     public final static String COMMAND_BCEL_CLASS_FILE = "bcel_class_file:";
     public final static String COMMAND_SCRIPT_FILE = "script_file:";

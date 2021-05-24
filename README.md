@@ -15,6 +15,8 @@
 - [ ] auto_cmd  自动判断操作系统执行命令
 - [ ] class_file 注入class文件，执行class代码
 - [ ] class_base64 注入class base64编码内容，执行class代码
+- [ ] code_file 注入要执行的代码
+- [ ] code_base64 注入要执行代码的base64编码
 - [ ] bcel 注入bcel字符串，实现代码执行
 - [ ] bcel_class_file 通过文件注入
 - [ ] script_file 通过js引擎执行代码
