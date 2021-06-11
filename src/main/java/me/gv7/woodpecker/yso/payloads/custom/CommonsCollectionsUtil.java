@@ -1,11 +1,11 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
 import me.gv7.woodpecker.bcel.HackBCELs;
+import me.gv7.woodpecker.yso.payloads.util.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.collections.functors.InvokerTransformer;
-import sun.misc.BASE64Decoder;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -206,11 +206,5 @@ public class CommonsCollectionsUtil {
             throw new Exception(String.format("Command [%s] not supported",command));
         }
         return transformers;
-    }
-
-
-    public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
-        String httplogURL = "http://127.0.0.1:1665/test";
-
     }
 }

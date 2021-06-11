@@ -3,7 +3,6 @@ package me.gv7.woodpecker.yso.payloads.util;
 
 import static com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.DESERIALIZE_TRANSLET;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
-import sun.misc.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.custom.CustomCommand;
 import me.gv7.woodpecker.yso.payloads.custom.TemplatesImplUtil;
 

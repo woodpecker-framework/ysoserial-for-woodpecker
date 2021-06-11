@@ -1,11 +1,11 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
 import me.gv7.woodpecker.bcel.HackBCELs;
+import me.gv7.woodpecker.yso.payloads.util.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
 import org.apache.commons.collections4.Transformer;
 import org.apache.commons.collections4.functors.ConstantTransformer;
 import org.apache.commons.collections4.functors.InvokerTransformer;
-import sun.misc.BASE64Decoder;
 import java.io.FileOutputStream;
 import java.net.URL;
 

@@ -1,8 +1,8 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
 import me.gv7.woodpecker.bcel.HackBCELs;
+import me.gv7.woodpecker.yso.payloads.util.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
-import sun.misc.BASE64Decoder;
 
 public class TemplatesImplUtil {
     public static String getCmd(String command) throws Exception {

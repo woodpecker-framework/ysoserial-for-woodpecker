@@ -1,7 +1,7 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
-import sun.misc.BASE64Decoder;
 import me.gv7.woodpecker.yso.Strings;
+import me.gv7.woodpecker.yso.payloads.util.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
 
 import java.util.Arrays;
