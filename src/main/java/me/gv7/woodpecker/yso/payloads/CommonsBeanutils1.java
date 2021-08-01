@@ -39,6 +39,6 @@ public class CommonsBeanutils1 implements ObjectPayload<Object> {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		PayloadRunner.run(CommonsBeanutils1.class, args);
+        PayloadRunner.run(CommonsBeanutils1.class, args);
 	}
 }

@@ -81,7 +81,6 @@ public class CommonsCollections6 extends PayloadRunner implements ObjectPayload<
         keyField.set(node, entry);
 
         return map;
-
     }
 
     public static void main(String[] args) throws Exception {

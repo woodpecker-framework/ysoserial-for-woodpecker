@@ -17,3 +17,5 @@ target/
 pwntest
 
 .DS_Store
+*.ser
+*.jar
