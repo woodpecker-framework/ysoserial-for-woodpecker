@@ -6,6 +6,12 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
+/**
+ * @author c0ny1
+ * @reference:
+ *      Java反序列化数据绕WAF之加大量脏数据
+ *      https://gv7.me/articles/2021/java-deserialize-data-bypass-waf-by-adding-a-lot-of-dirty-data/
+ */
 public class DirtyDataWrapper {
     private int dirtyDataSize; //脏数据大小
     private String dirtyData; //脏数据内容
