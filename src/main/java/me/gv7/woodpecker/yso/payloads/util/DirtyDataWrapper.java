@@ -30,7 +30,6 @@ public class DirtyDataWrapper {
         Object wrapper = null;
         dirtyData = getLongString(dirtyDataSize);
         int type = (int)(Math.random() * 10) % 10 + 1;
-        type=5;
         switch (type){
             case 0:
                 List<Object> arrayList = new ArrayList<Object>();

@@ -31,7 +31,7 @@ public class TemplatesImplUtil {
             cmd = String.format("String[] cmds = new String[]{\"cmd.exe\",\"/c\",new String(new byte[]{%s})};" +
                 "java.lang.Runtime.getRuntime().exec(cmds);",cmdByteArray);
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_LINUX_CMD)){
-            String strCmd = command.substring(CustomCommand.COMMAND_AUTO_CMD.length());
+            String strCmd = command.substring(CustomCommand.COMMAND_LINUX_CMD.length());
             String cmdByteArray = CommonUtil.stringToByteArrayString(strCmd);
             cmd = String.format("String[] cmds = new String[]{\"/bin/sh\",\"-c\",new String(new byte[]{%s})};" +
                 "java.lang.Runtime.getRuntime().exec(cmds);",cmdByteArray);
