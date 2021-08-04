@@ -14,7 +14,7 @@ public class GeneratePayload {
     public static CommandLine cmdLine;
 	private static final int INTERNAL_ERROR_CODE = 70;
 	private static final int USAGE_CODE = 64;
-	private static final String VERSION = "0.4.0";
+	private static final String VERSION = "0.4.2";
 
 	public static void main(final String[] args) {
         Options options = new Options();
