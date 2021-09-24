@@ -30,6 +30,8 @@ public @interface Authors {
     String BEIYING ="Beiying";
     String KORLR = "koalr";
     String PHITHON = "phith0n";
+    String NOPOINT = "NoPoint";
+    String C0NY1 = "c0ny1";
 
     String[] value() default {};
 

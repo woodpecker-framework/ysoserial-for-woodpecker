@@ -5,6 +5,7 @@ import java.lang.reflect.Proxy;
 import java.rmi.registry.Registry;
 import java.rmi.server.ObjID;
 import java.rmi.server.RemoteObjectInvocationHandler;
+import java.util.LinkedList;
 import java.util.Random;
 
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
