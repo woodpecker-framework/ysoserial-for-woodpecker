@@ -11,6 +11,7 @@ import org.apache.commons.cli.*;
 
 @SuppressWarnings("rawtypes")
 public class GeneratePayload {
+    public static YsoConfig ysoConfig = new YsoConfig();
     public static CommandLine cmdLine;
 	private static final int INTERNAL_ERROR_CODE = 70;
 	private static final int USAGE_CODE = 64;
@@ -22,7 +23,7 @@ public class GeneratePayload {
         options.addOption("a", "args",true, "gadget parameters");
         options.addOption("ddl", "dirt-data-length",true,"Add the length of dirty data, used to bypass WAF");
         options.addOption("l", "list",false, "List all gadgets");
-
+        options.addOption("c","compress",false,"Zip the Templates gadgets");
         CommandLineParser parser = new DefaultParser();
 
         try {
@@ -40,6 +41,12 @@ public class GeneratePayload {
         if(cmdLine.hasOption("list")){
             listAllGadgets();
             return;
+        }
+
+        if(cmdLine.hasOption("compress")){
+            ysoConfig.setCompress(true);
+        }else{
+            ysoConfig.setCompress(false);
         }
 
 		final String payloadType = cmdLine.getOptionValue("gadget");

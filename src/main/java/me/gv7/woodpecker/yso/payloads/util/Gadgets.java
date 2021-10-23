@@ -17,6 +17,7 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import me.gv7.woodpecker.yso.GeneratePayload;
 import me.gv7.woodpecker.yso.payloads.custom.CustomCommand;
 import me.gv7.woodpecker.yso.payloads.custom.TemplatesImplUtil;
 
@@ -93,9 +94,12 @@ public class Gadgets {
                 Class.forName("org.apache.xalan.xsltc.runtime.AbstractTranslet"),
                 Class.forName("org.apache.xalan.xsltc.trax.TransformerFactoryImpl"));
         }
-
-        return createTemplatesImpl(command, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
-        //return createCompressTemplatesImpl(command);
+        // 是否压缩
+        if(GeneratePayload.ysoConfig.isCompress()){
+            return createCompressTemplatesImpl(command);
+        }else{
+            return createTemplatesImpl(command, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
+        }
     }
 
 
