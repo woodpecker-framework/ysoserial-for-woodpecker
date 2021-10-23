@@ -6,8 +6,6 @@ import javax.swing.*;
 
 public class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-
-
         JEditorPane jEditorPane = new JEditorPane();
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("ok.ser"));
         oos.writeObject(jEditorPane);

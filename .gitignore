@@ -20,3 +20,4 @@ pwntest
 *.ser
 *.jar
 SSRF1.java
+URLDNSFindClass.java

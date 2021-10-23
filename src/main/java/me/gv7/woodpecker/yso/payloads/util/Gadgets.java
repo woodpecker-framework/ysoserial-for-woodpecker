@@ -122,7 +122,7 @@ public class Gadgets {
             clazz.setName("T" + System.nanoTime());
             CtClass superC = pool.get(abstTranslet.getName());
             clazz.setSuperclass(superC);
-            clazz.writeFile("./");
+            //clazz.writeFile("./");
             classBytes = clazz.toBytecode();
         }
 

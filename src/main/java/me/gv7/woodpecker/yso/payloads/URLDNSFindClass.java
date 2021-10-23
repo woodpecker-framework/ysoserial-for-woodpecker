@@ -6,9 +6,7 @@ import javassist.CtClass;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.annotation.PayloadTest;
-import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 import me.gv7.woodpecker.yso.payloads.util.Reflections;
-import sun.jvm.hotspot.memory.CMSBitMap;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -16,8 +14,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 
 /**

