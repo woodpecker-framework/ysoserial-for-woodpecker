@@ -1,5 +1,7 @@
 package me.gv7.woodpecker.yso.payloads;
 
+import me.gv7.woodpecker.yso.GeneratePayload;
+import me.gv7.woodpecker.yso.YsoConfig;
 import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
@@ -91,7 +93,6 @@ public class CommonsCollections10 extends PayloadRunner implements ObjectPayload
     }
 
     public static void main(String[] args) throws Exception {
-        args = new String[]{"loadjar:file:///Users/c0ny1/Documents/codebak/ysoserial-for-woodpecker/src/test/java/Calc.jar|Calc"};
         PayloadRunner.run(CommonsCollections10.class, args);
     }
 

