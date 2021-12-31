@@ -1,7 +1,7 @@
 # ysoserial-for-woodpecker
 
 ## 0x01 简介
-`ysoserial-for-woodpecker`是基于 [ysoserial](https://github.com/frohoff/ysoserial) ,为woodpecker框架定制开发的gadget集成库。
+`ysoserial-for-woodpecker`是基于 [ysoserial](https://github.com/frohoff/ysoserial) ,为woodpecker框架定制开发的JDK反序列化gadget集成库。
 
 ## 0x02 功能
 - [ ] sleep 生成延时payload

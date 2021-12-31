@@ -99,8 +99,4 @@ public class CommonUtil {
         }
         return sb.toString();
     }
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(fileContextToByteArrayString("/Users/c0ny1/Downloads/jdvw/src/test/java/Hufmueyvoir.class"));
-    }
 }

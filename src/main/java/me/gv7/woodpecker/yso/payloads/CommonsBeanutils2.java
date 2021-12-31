@@ -1,6 +1,5 @@
 package me.gv7.woodpecker.yso.payloads;
 
-import com.thoughtworks.xstream.XStream;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.util.Gadgets;

