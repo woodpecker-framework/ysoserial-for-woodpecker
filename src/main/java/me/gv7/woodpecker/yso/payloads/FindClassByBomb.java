@@ -98,11 +98,4 @@ public class FindClassByBomb extends PayloadRunner implements ObjectPayload<Obje
         ctClass.defrost();
         return clazz;
     }
-
-    public static void main ( final String[] args ) throws Exception {
-        //PayloadRunner.run(FindClassByBomb.class, args);
-        FileOutputStream fileOutputStream = new FileOutputStream("/tmp/bomb.ser");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-        objectOutputStream.writeObject(new FindClassByBomb().getObject("com.alibaba.fastjson.util.ASMClassLoader|28"));
-    }
 }

