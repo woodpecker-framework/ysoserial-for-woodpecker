@@ -4,7 +4,7 @@
 
 	<groupId>me.gv7.woodpecker</groupId>
 	<artifactId>ysoserial-for-woodpecker</artifactId>
-	<version>0.4.4.1</version>
+	<version>0.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>ysoserial</name>
