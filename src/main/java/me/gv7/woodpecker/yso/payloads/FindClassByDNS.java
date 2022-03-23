@@ -73,6 +73,7 @@ public class FindClassByDNS implements ObjectPayload<Object> {
     public static Class makeClass(String clazzName) throws CannotCompileException {
         ClassPool classPool = ClassPool.getDefault();
         CtClass ctClass = classPool.makeClass(clazzName);
+        ctClass.getClassFile().setVersionToJava5();
         return ctClass.toClass();
     }
 

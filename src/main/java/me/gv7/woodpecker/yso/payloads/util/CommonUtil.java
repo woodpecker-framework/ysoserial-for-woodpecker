@@ -29,6 +29,7 @@ public class CommonUtil {
             ClassPool pool = new ClassPool(true);
             CtClass targetClass = pool.makeClass(className);
             try {
+                targetClass.getClassFile().setVersionToJava5();
                 clazz = targetClass.toClass();
             } catch (CannotCompileException cannotCompileException) {
                 cannotCompileException.printStackTrace();
