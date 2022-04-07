@@ -3,6 +3,7 @@ package me.gv7.woodpecker.yso.payloads;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;
+import me.gv7.woodpecker.yso.JavassistClassLoader;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.annotation.PayloadTest;
@@ -74,7 +75,9 @@ public class FindClassByDNS implements ObjectPayload<Object> {
         ClassPool classPool = ClassPool.getDefault();
         CtClass ctClass = classPool.makeClass(clazzName);
         ctClass.getClassFile().setVersionToJava5();
-        return ctClass.toClass();
+        Class clazz = ctClass.toClass(new JavassistClassLoader());
+        ctClass.defrost();
+        return clazz;
     }
 
     /**

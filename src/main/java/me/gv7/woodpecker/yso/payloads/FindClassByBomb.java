@@ -67,10 +67,6 @@ public class FindClassByBomb extends PayloadRunner implements ObjectPayload<Obje
             s1 = t1;
             s2 = t2;
         }
-
-
-
-
         return root;
     }
 
