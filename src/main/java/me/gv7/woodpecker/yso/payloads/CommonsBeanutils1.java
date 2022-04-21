@@ -1,7 +1,7 @@
 package me.gv7.woodpecker.yso.payloads;
 
 import java.math.BigInteger;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import me.gv7.woodpecker.yso.payloads.util.Gadgets;
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;

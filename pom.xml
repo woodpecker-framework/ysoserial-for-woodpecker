@@ -386,7 +386,10 @@
             <artifactId>xstream</artifactId>
             <version>1.4.16</version>
         </dependency>
+
 	</dependencies>
+
+
 
 	<profiles>
         <profile>
