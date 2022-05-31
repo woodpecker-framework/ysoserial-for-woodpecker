@@ -6,12 +6,9 @@ package me.gv7.woodpecker.yso.payloads.util;
  *
  */
 public class JavaVersion {
-
-
     public int major;
     public int minor;
     public int update;
-
 
 
     public static JavaVersion getLocalVersion() {

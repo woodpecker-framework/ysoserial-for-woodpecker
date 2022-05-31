@@ -20,7 +20,8 @@ public class A implements Serializable {
 
     }
 
-    public void doA(){
+    public void doA() throws FileNotFoundException {
+
 
     }
 
