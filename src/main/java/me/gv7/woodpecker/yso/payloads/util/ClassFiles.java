@@ -1,5 +1,10 @@
 package me.gv7.woodpecker.yso.payloads.util;
 
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import me.gv7.woodpecker.yso.JavassistClassLoader;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,5 +45,4 @@ public class ClassFiles {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

