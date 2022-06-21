@@ -23,8 +23,8 @@
 				<version>3.5.1</version>
 				<configuration>
 					<!-- maximize compatibility -->
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<!-- ignore noisy internal api warnings -->
                     <compilerArgument>-XDignore.symbol.file</compilerArgument>
                     <fork>true</fork>
@@ -396,7 +396,7 @@
         <profile>
             <id>jdk6</id>
             <activation>
-                <jdk>1.6</jdk>
+                <jdk>1.7</jdk>
             </activation>
             <build>
                 <plugins>

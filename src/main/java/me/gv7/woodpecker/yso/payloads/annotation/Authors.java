@@ -32,6 +32,7 @@ public @interface Authors {
     String PHITHON = "phith0n";
     String NOPOINT = "NoPoint";
     String C0NY1 = "c0ny1";
+    String KEZIBEI = "kezibei";
 
     String[] value() default {};
 
