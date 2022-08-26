@@ -24,7 +24,7 @@ public class GeneratePayload {
         options.addOption("ddl", "dirt-data-length",true,"Add the length of dirty data, used to bypass WAF");
         options.addOption("l", "list",false, "List all gadgets");
         options.addOption("c","compress",false,"Zip the Templates gadgets");
-        options.addOption("b", "base64", true, "base64 payload result");
+        options.addOption("b", "base64", false, "base64 payload result");
         CommandLineParser parser = new DefaultParser();
 
         try {

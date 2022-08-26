@@ -32,6 +32,7 @@ public class Serializer implements Callable<byte[]> {
             final ObjectOutputStream objOut = new ObjectOutputStream(byteArrayOutputStream);
             objOut.writeObject(obj);
             System.out.println(Base64.encodeBase64String(byteArrayOutputStream.toByteArray()));
+            System.exit(0);
         }
 
         final ObjectOutputStream objOut = new ObjectOutputStream(out);
