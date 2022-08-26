@@ -1,13 +1,13 @@
 package me.gv7.woodpecker.yso;
 
-import java.io.PrintStream;
-import java.util.*;
-
 import me.gv7.woodpecker.yso.payloads.ObjectPayload;
 import me.gv7.woodpecker.yso.payloads.annotation.Authors;
 import me.gv7.woodpecker.yso.payloads.annotation.Dependencies;
 import me.gv7.woodpecker.yso.payloads.util.DirtyDataWrapper;
 import org.apache.commons.cli.*;
+
+import java.io.PrintStream;
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public class GeneratePayload {
@@ -24,6 +24,7 @@ public class GeneratePayload {
         options.addOption("ddl", "dirt-data-length",true,"Add the length of dirty data, used to bypass WAF");
         options.addOption("l", "list",false, "List all gadgets");
         options.addOption("c","compress",false,"Zip the Templates gadgets");
+        options.addOption("b", "base64", true, "base64 payload result");
         CommandLineParser parser = new DefaultParser();
 
         try {
