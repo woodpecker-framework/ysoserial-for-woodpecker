@@ -48,7 +48,7 @@ public class AspectJWeaver implements ObjectPayload<Serializable> {
     public Serializable getObject(final String command) throws Exception {
         int sep = command.lastIndexOf(':');
         if ( sep < 0 ) {
-            throw new IllegalArgumentException("Command format is: <filename>:<base64 Object>");
+            throw new IllegalArgumentException("Command format is: <filename>;<base64 Object>");
         }
         String[] parts = command.split(":");
         String filename = parts[0];
