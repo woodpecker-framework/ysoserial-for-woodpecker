@@ -3,10 +3,6 @@ package me.gv7.woodpecker.yso.payloads;
 import bsh.Interpreter;
 import bsh.NameSpace;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

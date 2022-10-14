@@ -4,7 +4,7 @@
 
 	<groupId>me.gv7.woodpecker</groupId>
 	<artifactId>ysoserial-for-woodpecker</artifactId>
-	<version>0.5.2</version>
+	<version>0.5.3</version>
 	<packaging>jar</packaging>
 
 	<name>ysoserial</name>
@@ -386,6 +386,22 @@
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.16</version>
+        </dependency>
+
+
+        <!-- dependency for FastJson Gadget -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.48</version>
+        </dependency>
+
+        <!-- dependency for c3p0 tomcat gadget chain -->
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>9.0.52</version>
         </dependency>
 
 	</dependencies>

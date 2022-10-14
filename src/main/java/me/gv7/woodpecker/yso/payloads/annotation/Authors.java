@@ -34,6 +34,7 @@ public @interface Authors {
     String C0NY1 = "c0ny1";
     String yulegeyu = "yulegeyu";
     String None = "None";
+    String KEZIBEI = "kezibei";
 
     String[] value() default {};
 
